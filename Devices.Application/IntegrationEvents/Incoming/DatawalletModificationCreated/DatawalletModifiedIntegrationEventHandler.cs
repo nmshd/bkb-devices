@@ -1,8 +1,8 @@
 ﻿using System.Threading.Tasks;
 using AutoMapper;
-using Enmeshed.BuildingBlocks.Application.Abstractions.Infrastructure.EventBus;
 using Devices.Application.Infrastructure.PushNotifications;
 using Devices.Application.Infrastructure.PushNotifications.Datawallet;
+using Enmeshed.BuildingBlocks.Application.Abstractions.Infrastructure.EventBus;
 
 namespace Devices.Application.IntegrationEvents.Incoming.DatawalletModificationCreated
 {

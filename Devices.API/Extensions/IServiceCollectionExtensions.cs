@@ -4,16 +4,17 @@ using System.Linq;
 using System.Reflection;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using Enmeshed.BuildingBlocks.API;
-using Enmeshed.BuildingBlocks.API.Mvc.ExceptionFilters;
-using Enmeshed.BuildingBlocks.API.Mvc.JsonConverters;
-using Enmeshed.BuildingBlocks.Application.Abstractions.Infrastructure.UserContext;
-using Enmeshed.BuildingBlocks.Infrastructure.UserContext;
 using Devices.API.ApplicationInsights.TelemetryInitializers;
 using Devices.API.AspNetCoreIdentityCustomizations;
 using Devices.API.Certificates;
 using Devices.Domain.Entities;
 using Devices.Infrastructure.Persistence.Database;
+using Enmeshed.BuildingBlocks.API;
+using Enmeshed.BuildingBlocks.API.Mvc.ExceptionFilters;
+using Enmeshed.BuildingBlocks.API.Mvc.JsonConverters;
+using Enmeshed.BuildingBlocks.Application.Abstractions.Infrastructure.UserContext;
+using Enmeshed.BuildingBlocks.Infrastructure.UserContext;
+using Enmeshed.Tooling.JsonConverters;
 using FluentValidation;
 using IdentityServer4;
 using IdentityServer4.Services;
@@ -29,7 +30,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Enmeshed.Tooling.JsonConverters;
 
 namespace Devices.API.Extensions
 {
@@ -189,7 +189,7 @@ namespace Devices.API.Extensions
             services.AddSingleton<ITelemetryInitializer, UserInformationTelemetryInitializer>();
             services.AddSingleton<ITelemetryInitializer, CloudRoleNameTelemetryInitializer>();
 
-            services.ConfigureTelemetryModule<EventCounterCollectionModule>((module, o) =>
+            services.ConfigureTelemetryModule<EventCounterCollectionModule>((module, _) =>
             {
                 module.Counters.Add(new EventCounterCollectionRequest("System.Runtime", "alloc-rate"));
                 module.Counters.Add(new EventCounterCollectionRequest("System.Runtime", "cpu-usage"));

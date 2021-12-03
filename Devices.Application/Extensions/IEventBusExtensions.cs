@@ -1,6 +1,6 @@
-﻿using Enmeshed.BuildingBlocks.Application.Abstractions.Infrastructure.EventBus;
-using Devices.Application.IntegrationEvents.Incoming.DatawalletModificationCreated;
+﻿using Devices.Application.IntegrationEvents.Incoming.DatawalletModificationCreated;
 using Devices.Application.IntegrationEvents.Incoming.ExternalEventCreated;
+using Enmeshed.BuildingBlocks.Application.Abstractions.Infrastructure.EventBus;
 
 namespace Devices.Application.Extensions
 {

@@ -1,5 +1,5 @@
-﻿using Enmeshed.DevelopmentKit.Identity.ValueObjects;
-using Devices.Application.Devices.DTOs;
+﻿using Devices.Application.Devices.DTOs;
+using Enmeshed.DevelopmentKit.Identity.ValueObjects;
 using MediatR;
 
 namespace Devices.Application.Devices.Commands.DeleteDevice

@@ -1,8 +1,8 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
+using Devices.Application.Infrastructure.PushNotifications;
 using Enmeshed.BuildingBlocks.Application.Abstractions.Infrastructure.UserContext;
 using Enmeshed.DevelopmentKit.Identity.ValueObjects;
-using Devices.Application.Infrastructure.PushNotifications;
 using MediatR;
 
 namespace Devices.Application.PushNotifications.Commands.SendTestNotification

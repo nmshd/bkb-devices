@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
-using Enmeshed.BuildingBlocks.Application.Pagination;
 using Devices.Application.Devices.DTOs;
+using Enmeshed.BuildingBlocks.Application.Pagination;
 
 namespace Devices.Application.Devices.Queries.ListDevices
 {

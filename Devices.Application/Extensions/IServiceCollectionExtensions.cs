@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Enmeshed.BuildingBlocks.Application.Abstractions.Infrastructure.EventBus;
-using Enmeshed.BuildingBlocks.Application.MediatR;
 using Devices.Application.AutoMapper;
 using Devices.Application.Devices.Commands.RegisterDevice;
+using Enmeshed.BuildingBlocks.Application.Abstractions.Infrastructure.EventBus;
+using Enmeshed.BuildingBlocks.Application.MediatR;
 using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;

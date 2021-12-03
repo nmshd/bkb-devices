@@ -1,8 +1,8 @@
 ﻿using System.Text.Json;
 using Enmeshed.DevelopmentKit.Identity.ValueObjects;
-using Newtonsoft.Json;
 using Enmeshed.Tooling;
 using Enmeshed.Tooling.Extensions;
+using Newtonsoft.Json;
 
 namespace Devices.Infrastructure.PushNotifications
 {

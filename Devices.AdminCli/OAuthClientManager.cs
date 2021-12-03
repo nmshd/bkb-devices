@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using Devices.API.Models;
+using Enmeshed.StronglyTypedIds;
 using IdentityServer4;
 using IdentityServer4.EntityFramework.DbContexts;
 using IdentityServer4.EntityFramework.Mappers;
 using IdentityServer4.Models;
-using Enmeshed.StronglyTypedIds;
 
 namespace Devices.AdminCli
 {

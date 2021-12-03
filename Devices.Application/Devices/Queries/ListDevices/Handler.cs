@@ -3,13 +3,13 @@ using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using Devices.Application.Devices.DTOs;
+using Devices.Application.Extensions;
+using Devices.Domain.Entities;
 using Enmeshed.BuildingBlocks.Application.Abstractions.Infrastructure.Persistence.Database;
 using Enmeshed.BuildingBlocks.Application.Abstractions.Infrastructure.UserContext;
 using Enmeshed.BuildingBlocks.Application.Extensions;
 using Enmeshed.DevelopmentKit.Identity.ValueObjects;
-using Devices.Application.Devices.DTOs;
-using Devices.Application.Extensions;
-using Devices.Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 

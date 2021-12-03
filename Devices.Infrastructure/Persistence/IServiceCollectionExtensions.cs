@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Reflection;
-using Enmeshed.BuildingBlocks.Application.Abstractions.Infrastructure.Persistence.Database;
 using Devices.Infrastructure.Persistence.Database;
+using Enmeshed.BuildingBlocks.Application.Abstractions.Infrastructure.Persistence.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 

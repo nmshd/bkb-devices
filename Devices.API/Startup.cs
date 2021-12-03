@@ -1,14 +1,14 @@
 ﻿using System;
-using Enmeshed.BuildingBlocks.API.Extensions;
-using Enmeshed.BuildingBlocks.Application.Abstractions.Infrastructure.EventBus;
-using Enmeshed.Crypto.Abstractions;
-using Enmeshed.Crypto.Implementations;
 using Devices.API.Extensions;
 using Devices.Application;
 using Devices.Application.Extensions;
 using Devices.Infrastructure.EventBus;
 using Devices.Infrastructure.Persistence;
 using Devices.Infrastructure.PushNotifications;
+using Enmeshed.BuildingBlocks.API.Extensions;
+using Enmeshed.BuildingBlocks.Application.Abstractions.Infrastructure.EventBus;
+using Enmeshed.Crypto.Abstractions;
+using Enmeshed.Crypto.Implementations;
 using IdentityServer4.Extensions;
 using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.AspNetCore.Builder;
@@ -60,7 +60,7 @@ namespace Devices.API
 
             services.AddCustomIdentityServer(_configuration, _env);
 
-            services.AddCustomFluentValidation(options => { });
+            services.AddCustomFluentValidation(_ => { });
 
             services.AddDatabase(options => options.ConnectionString = _configuration.GetSqlDatabaseConfiguration().ConnectionString);
 

@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Enmeshed.DevelopmentKit.Identity.ValueObjects;
 using Devices.Domain.Entities;
 using Devices.Infrastructure.Persistence.Database;
+using Enmeshed.DevelopmentKit.Identity.ValueObjects;
+using Enmeshed.Tooling;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Enmeshed.Tooling;
 
 namespace Devices.API
 {

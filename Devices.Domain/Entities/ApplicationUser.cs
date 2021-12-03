@@ -1,7 +1,7 @@
 ﻿using System;
 using Enmeshed.DevelopmentKit.Identity.ValueObjects;
-using Microsoft.AspNetCore.Identity;
 using Enmeshed.Tooling;
+using Microsoft.AspNetCore.Identity;
 
 namespace Devices.Domain.Entities
 {

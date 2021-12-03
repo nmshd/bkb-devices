@@ -2,6 +2,7 @@
 using Azure.Identity;
 using Devices.API.ExtensionMethods;
 using Devices.Infrastructure.Persistence.Database;
+using Enmeshed.Tooling.Extensions;
 using IdentityServer4.EntityFramework.DbContexts;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
@@ -25,7 +26,7 @@ namespace Devices.API
                 .UseKestrel(options =>
                 {
                     options.AddServerHeader = false;
-                    options.Limits.MaxRequestBodySize = 1024;
+                    options.Limits.MaxRequestBodySize = 1.Kibibytes();
                 })
                 .ConfigureAppConfiguration(AddAzureAppConfiguration)
                 .UseStartup<Startup>();

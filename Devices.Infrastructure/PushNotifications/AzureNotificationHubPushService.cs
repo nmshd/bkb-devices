@@ -4,9 +4,9 @@ using System.Reflection;
 using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Threading.Tasks;
-using Enmeshed.DevelopmentKit.Identity.ValueObjects;
 using Devices.Application.Infrastructure.PushNotifications;
 using Devices.Domain.Entities;
+using Enmeshed.DevelopmentKit.Identity.ValueObjects;
 using Microsoft.Azure.NotificationHubs;
 using Microsoft.Extensions.Logging;
 

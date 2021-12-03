@@ -1,5 +1,5 @@
-﻿using Enmeshed.DevelopmentKit.Identity.ValueObjects;
-using Devices.Domain.Entities;
+﻿using Devices.Domain.Entities;
+using Enmeshed.DevelopmentKit.Identity.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

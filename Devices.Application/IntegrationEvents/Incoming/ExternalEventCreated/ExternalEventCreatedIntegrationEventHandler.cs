@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
-using Enmeshed.BuildingBlocks.Application.Abstractions.Infrastructure.EventBus;
 using Devices.Application.Infrastructure.PushNotifications;
 using Devices.Application.Infrastructure.PushNotifications.ExternalEvents;
+using Enmeshed.BuildingBlocks.Application.Abstractions.Infrastructure.EventBus;
 
 namespace Devices.Application.IntegrationEvents.Incoming.ExternalEventCreated
 {

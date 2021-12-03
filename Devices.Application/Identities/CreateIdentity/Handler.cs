@@ -1,12 +1,12 @@
 ﻿using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Enmeshed.BuildingBlocks.Application.Abstractions.Exceptions;
-using Enmeshed.BuildingBlocks.Application.Abstractions.Infrastructure.Persistence.Database;
-using Enmeshed.DevelopmentKit.Identity.ValueObjects;
 using Devices.Application.Devices.DTOs;
 using Devices.Application.Extensions;
 using Devices.Domain.Entities;
+using Enmeshed.BuildingBlocks.Application.Abstractions.Exceptions;
+using Enmeshed.BuildingBlocks.Application.Abstractions.Infrastructure.Persistence.Database;
+using Enmeshed.DevelopmentKit.Identity.ValueObjects;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;

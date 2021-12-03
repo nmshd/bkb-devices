@@ -5,11 +5,11 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Devices.API.Models;
 using Devices.Domain.Entities;
+using Enmeshed.Tooling;
 using IdentityModel;
 using IdentityServer4.Models;
 using IdentityServer4.Services;
 using Microsoft.AspNetCore.Identity;
-using Enmeshed.Tooling;
 
 namespace Devices.API.AspNetCoreIdentityCustomizations
 {

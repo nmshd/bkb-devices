@@ -1,12 +1,12 @@
 ﻿using System.Text.Json;
 using System.Threading.Tasks;
+using Devices.Application.Devices.DTOs;
+using Devices.Application.DTOs;
+using Devices.Domain.Entities;
 using Enmeshed.BuildingBlocks.Application.Abstractions.Exceptions;
 using Enmeshed.BuildingBlocks.Application.Abstractions.Infrastructure.Persistence.Database;
 using Enmeshed.Crypto;
 using Enmeshed.Crypto.Abstractions;
-using Devices.Application.Devices.DTOs;
-using Devices.Application.DTOs;
-using Devices.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace Devices.Application

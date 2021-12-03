@@ -1,5 +1,5 @@
-﻿using Enmeshed.BuildingBlocks.Application.FluentValidation;
-using Devices.Application.Devices.DTOs.Validators;
+﻿using Devices.Application.Devices.DTOs.Validators;
+using Enmeshed.BuildingBlocks.Application.FluentValidation;
 using FluentValidation;
 
 namespace Devices.Application.Identities.CreateIdentity

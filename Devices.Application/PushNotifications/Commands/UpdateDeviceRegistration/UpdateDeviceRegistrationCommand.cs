@@ -1,6 +1,6 @@
 ﻿using System;
-using Enmeshed.BuildingBlocks.Application.Abstractions.Infrastructure.Mapping;
 using Devices.Domain.Entities;
+using Enmeshed.BuildingBlocks.Application.Abstractions.Infrastructure.Mapping;
 using MediatR;
 
 namespace Devices.Application.PushNotifications.Commands.UpdateDeviceRegistration

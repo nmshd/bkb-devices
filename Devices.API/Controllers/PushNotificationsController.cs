@@ -1,8 +1,8 @@
 ﻿using System.Threading.Tasks;
-using Enmeshed.BuildingBlocks.API.Mvc.ControllerAttributes;
 using Devices.Application.PushNotifications.Commands.SendTestNotification;
 using Devices.Application.PushNotifications.Commands.UpdateDeviceRegistration;
 using Enmeshed.BuildingBlocks.API.Mvc;
+using Enmeshed.BuildingBlocks.API.Mvc.ControllerAttributes;
 using IdentityServer4;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;

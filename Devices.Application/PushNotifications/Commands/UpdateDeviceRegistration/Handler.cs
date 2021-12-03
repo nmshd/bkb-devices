@@ -1,10 +1,10 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
-using Enmeshed.BuildingBlocks.Application.Abstractions.Infrastructure.UserContext;
-using Enmeshed.DevelopmentKit.Identity.ValueObjects;
 using Devices.Application.Infrastructure.PushNotifications;
 using Devices.Domain.Entities;
+using Enmeshed.BuildingBlocks.Application.Abstractions.Infrastructure.UserContext;
+using Enmeshed.DevelopmentKit.Identity.ValueObjects;
 using MediatR;
 
 namespace Devices.Application.PushNotifications.Commands.UpdateDeviceRegistration
