@@ -40,7 +40,7 @@ namespace Devices.API.Extensions
         public int ConnectionRetryCount { get; set; }
         public string SubscriptionClientName { get; set; }
     }
-    
+
     public class SqlDatabaseConfiguration
     {
         public string ConnectionString { get; set; }
