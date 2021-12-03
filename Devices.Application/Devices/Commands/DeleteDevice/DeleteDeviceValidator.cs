@@ -1,0 +1,21 @@
+﻿using Enmeshed.BuildingBlocks.Application.FluentValidation;
+using Devices.Application.Devices.DTOs.Validators;
+using FluentValidation;
+
+namespace Devices.Application.Devices.Commands.DeleteDevice
+{
+    public class DeleteDeviceValidator : AbstractValidator<DeleteDeviceCommand>
+    {
+        public DeleteDeviceValidator()
+        {
+            RuleFor(c => c.DeviceId).DetailedNotEmpty();
+
+            RuleFor(c => c.DeletionCertificate).DetailedNotEmpty();
+
+            RuleFor(c => c.SignedChallenge)
+                .Cascade(CascadeMode.Stop)
+                .DetailedNotEmpty()
+                .SetValidator(new SignedChallengeDTOValidator());
+        }
+    }
+}
