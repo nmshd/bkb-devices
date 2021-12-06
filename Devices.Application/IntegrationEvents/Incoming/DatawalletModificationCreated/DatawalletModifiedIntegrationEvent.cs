@@ -5,7 +5,7 @@ namespace Devices.Application.IntegrationEvents.Incoming.DatawalletModificationC
 {
     public class DatawalletModifiedIntegrationEvent : IntegrationEvent
     {
-        public IdentityAddress Identity { get; private set; }
-        public DeviceId ModifiedByDevice { get; private set; }
+        public IdentityAddress Identity { get; set; }
+        public DeviceId ModifiedByDevice { get; set; }
     }
 }
