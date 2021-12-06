@@ -60,6 +60,7 @@ namespace Devices.API.Extensions
                 .AddJsonOptions(options =>
                 {
                     options.JsonSerializerOptions.Converters.Add(new UtcDateTimeConverter());
+                    options.JsonSerializerOptions.Converters.Add(new NullableUtcDateTimeConverter());
                     options.JsonSerializerOptions.Converters.Add(new UrlSafeBase64ToByteArrayJsonConverter());
                     options.JsonSerializerOptions.Converters.Add(new DeviceIdJsonConverter());
                     options.JsonSerializerOptions.Converters.Add(new IdentityAddressJsonConverter());
