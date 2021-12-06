@@ -10,7 +10,6 @@ namespace Devices.Application.Tests.Tests.AutoMapper
         [Fact]
         public void ProfileIsValid()
         {
-            true.Should().BeFalse();
             // Arrange
             var configuration = new MapperConfiguration(cfg => cfg.AddProfile<AutoMapperProfile>());
 
