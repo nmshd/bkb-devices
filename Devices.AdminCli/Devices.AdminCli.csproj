@@ -15,10 +15,4 @@
     <ProjectReference Include="..\Devices.Infrastructure\Devices.Infrastructure.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <None Update="configuration.Local.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-
 </Project>
