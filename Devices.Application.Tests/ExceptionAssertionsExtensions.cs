@@ -17,10 +17,7 @@ namespace Devices.Application.Tests
     public class ApplicationExceptionAssertions :
         ReferenceTypeAssertions<ApplicationException, ApplicationExceptionAssertions>
     {
-        public ApplicationExceptionAssertions(ApplicationException instance)
-        {
-            Subject = instance;
-        }
+        public ApplicationExceptionAssertions(ApplicationException instance) : base(instance) { }
 
         protected override string Identifier => "ApplicationException";
 

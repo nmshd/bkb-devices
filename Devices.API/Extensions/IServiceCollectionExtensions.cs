@@ -71,8 +71,7 @@ namespace Devices.API.Extensions
                     }
 
                     options.JsonSerializerOptions.DictionaryKeyPolicy = JsonNamingPolicy.CamelCase;
-                })
-                .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
+                });
 
             services
                 .AddAuthentication(IdentityServerConstants.LocalApi.AuthenticationScheme)
