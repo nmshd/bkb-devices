@@ -1,5 +1,4 @@
-﻿using System;
-using Devices.API.Extensions;
+﻿using Devices.API.Extensions;
 using Devices.Application;
 using Devices.Application.Extensions;
 using Devices.Infrastructure.EventBus;
@@ -11,92 +10,87 @@ using Enmeshed.Crypto.Abstractions;
 using Enmeshed.Crypto.Implementations;
 using IdentityServer4.Extensions;
 using Microsoft.ApplicationInsights.Extensibility;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpOverrides;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 
-namespace Devices.API
+namespace Devices.API;
+
+public class Startup
 {
-    public class Startup
+    private readonly IConfiguration _configuration;
+    private readonly IWebHostEnvironment _env;
+
+    public Startup(IWebHostEnvironment env, IConfiguration configuration)
     {
-        private readonly IConfiguration _configuration;
-        private readonly IWebHostEnvironment _env;
+        _env = env;
+        _configuration = configuration;
+    }
 
-        public Startup(IWebHostEnvironment env, IConfiguration configuration)
+    public IServiceProvider ConfigureServices(IServiceCollection services)
+    {
+        services.Configure<ApplicationOptions>(_configuration.GetSection("ApplicationOptions"));
+
+        services.Configure<ForwardedHeadersOptions>(options =>
         {
-            _env = env;
-            _configuration = configuration;
-        }
+            options.ForwardedHeaders =
+                ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto | ForwardedHeaders.XForwardedHost;
+            options.KnownNetworks.Clear();
+            options.KnownProxies.Clear();
+        });
 
-        public IServiceProvider ConfigureServices(IServiceCollection services)
+        services.AddCustomAspNetCore(options =>
         {
-            services.Configure<ApplicationOptions>(_configuration.GetSection("ApplicationOptions"));
+            options.Authentication.Audience = "devices";
+            options.Authentication.Authority = _configuration.GetAuthorizationConfiguration().Authority;
+            options.Authentication.ValidIssuer = _configuration.GetAuthorizationConfiguration().ValidIssuer;
 
-            services.Configure<ForwardedHeadersOptions>(options =>
-            {
-                options.ForwardedHeaders =
-                    ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto | ForwardedHeaders.XForwardedHost;
-                options.KnownNetworks.Clear();
-                options.KnownProxies.Clear();
-            });
+            options.Cors.AllowedOrigins = _configuration.GetCorsConfiguration().AllowedOrigins;
+            options.Cors.ExposedHeaders = _configuration.GetCorsConfiguration().ExposedHeaders;
 
-            services.AddCustomAspNetCore(options =>
-            {
-                options.Authentication.Audience = "devices";
-                options.Authentication.Authority = _configuration.GetAuthorizationConfiguration().Authority;
-                options.Authentication.ValidIssuer = _configuration.GetAuthorizationConfiguration().ValidIssuer;
+            options.HealthChecks.SqlConnectionString = _configuration.GetSqlDatabaseConfiguration().ConnectionString;
+        });
 
-                options.Cors.AllowedOrigins = _configuration.GetCorsConfiguration().AllowedOrigins;
-                options.Cors.ExposedHeaders = _configuration.GetCorsConfiguration().ExposedHeaders;
+        services.AddCustomApplicationInsights();
 
-                options.HealthChecks.SqlConnectionString = _configuration.GetSqlDatabaseConfiguration().ConnectionString;
-            });
+        services.AddCustomIdentity(_env);
 
-            services.AddCustomApplicationInsights();
+        services.AddCustomIdentityServer(_configuration, _env);
 
-            services.AddCustomIdentity(_env);
+        services.AddCustomFluentValidation(_ => { });
 
-            services.AddCustomIdentityServer(_configuration, _env);
+        services.AddDatabase(options => options.ConnectionString = _configuration.GetSqlDatabaseConfiguration().ConnectionString);
 
-            services.AddCustomFluentValidation(_ => { });
+        services.AddEventBus(_configuration.GetEventBusConfiguration());
 
-            services.AddDatabase(options => options.ConnectionString = _configuration.GetSqlDatabaseConfiguration().ConnectionString);
-
-            services.AddEventBus(_configuration.GetEventBusConfiguration());
-
-            services.AddPushNotifications(options =>
-            {
-                options.ConnectionString = _configuration.GetAzureNotificationHubsConfiguration().ConnectionString;
-                options.HubName = _configuration.GetAzureNotificationHubsConfiguration().HubName;
-            });
-
-            services.AddApplication();
-
-            services.AddSingleton<ISignatureHelper, SignatureHelper>(_ => SignatureHelper.CreateEd25519WithRawKeyFormat());
-
-            return services.ToAutofacServiceProvider();
-        }
-
-        public void Configure(IApplicationBuilder app, TelemetryConfiguration telemetryConfiguration)
+        services.AddPushNotifications(options =>
         {
-            telemetryConfiguration.DisableTelemetry = !_configuration.GetApplicationInsightsConfiguration().Enabled;
+            options.ConnectionString = _configuration.GetAzureNotificationHubsConfiguration().ConnectionString;
+            options.HubName = _configuration.GetAzureNotificationHubsConfiguration().HubName;
+        });
 
-            app.Use(async (ctx, next) =>
-            {
-                ctx.SetIdentityServerOrigin(_configuration["AuthenticationConfiguration:PublicOrigin"]);
-                await next();
-            });
+        services.AddApplication();
 
-            app.UseForwardedHeaders();
+        services.AddSingleton<ISignatureHelper, SignatureHelper>(_ => SignatureHelper.CreateEd25519WithRawKeyFormat());
 
-            var eventBus = app.ApplicationServices.GetRequiredService<IEventBus>();
-            eventBus.AddApplicationSubscriptions();
+        return services.ToAutofacServiceProvider();
+    }
 
-            app.ConfigureMiddleware(_env);
+    public void Configure(IApplicationBuilder app, TelemetryConfiguration telemetryConfiguration)
+    {
+        telemetryConfiguration.DisableTelemetry = !_configuration.GetApplicationInsightsConfiguration().Enabled;
 
-            app.UseIdentityServer();
-        }
+        app.Use(async (ctx, next) =>
+        {
+            ctx.SetIdentityServerOrigin(_configuration["AuthenticationConfiguration:PublicOrigin"]);
+            await next();
+        });
+
+        app.UseForwardedHeaders();
+
+        var eventBus = app.ApplicationServices.GetRequiredService<IEventBus>();
+        eventBus.AddApplicationSubscriptions();
+
+        app.ConfigureMiddleware(_env);
+
+        app.UseIdentityServer();
     }
 }

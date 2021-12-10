@@ -1,30 +1,26 @@
-﻿using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using Devices.Domain.Entities;
+﻿using Devices.Domain.Entities;
 using Enmeshed.BuildingBlocks.Application.Abstractions.Exceptions;
 using Enmeshed.DevelopmentKit.Identity.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 
-namespace Devices.Application.Extensions
+namespace Devices.Application.Extensions;
+
+public static class IdentityQueryableExtensions
 {
-    public static class IdentityQueryableExtensions
+    public static async Task<Identity> FirstWithAddress(this IQueryable<Identity> query, IdentityAddress address, CancellationToken cancellationToken)
     {
-        public static async Task<Identity> FirstWithAddress(this IQueryable<Identity> query, IdentityAddress address, CancellationToken cancellationToken)
-        {
-            var identity = await query.FirstOrDefaultAsync(e => e.Address == address, cancellationToken);
+        var identity = await query.FirstOrDefaultAsync(e => e.Address == address, cancellationToken);
 
-            if (identity == null)
-                throw new NotFoundException(nameof(Identity));
+        if (identity == null)
+            throw new NotFoundException(nameof(Identity));
 
-            return identity;
-        }
+        return identity;
+    }
 
-        public static async Task<Identity> FirstWithAddressOrDefault(this IQueryable<Identity> query, IdentityAddress address, CancellationToken cancellationToken)
-        {
-            var identity = await query.FirstOrDefaultAsync(e => e.Address == address, cancellationToken);
+    public static async Task<Identity> FirstWithAddressOrDefault(this IQueryable<Identity> query, IdentityAddress address, CancellationToken cancellationToken)
+    {
+        var identity = await query.FirstOrDefaultAsync(e => e.Address == address, cancellationToken);
 
-            return identity;
-        }
+        return identity;
     }
 }

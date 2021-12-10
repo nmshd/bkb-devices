@@ -1,12 +1,10 @@
-﻿using System.Threading.Tasks;
-using Devices.Domain.Entities;
+﻿using Devices.Domain.Entities;
 using Enmeshed.DevelopmentKit.Identity.ValueObjects;
 
-namespace Devices.Application.Infrastructure.PushNotifications
+namespace Devices.Application.Infrastructure.PushNotifications;
+
+public interface IPushService
 {
-    public interface IPushService
-    {
-        Task SendNotificationAsync(IdentityAddress recipient, object notification);
-        Task RegisterDeviceAsync(IdentityAddress identityId, DeviceRegistration registration);
-    }
+    Task SendNotificationAsync(IdentityAddress recipient, object notification);
+    Task RegisterDeviceAsync(IdentityAddress identityId, DeviceRegistration registration);
 }

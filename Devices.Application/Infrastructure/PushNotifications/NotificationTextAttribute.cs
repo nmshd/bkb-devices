@@ -1,14 +1,11 @@
-﻿using System;
+﻿namespace Devices.Application.Infrastructure.PushNotifications;
 
-namespace Devices.Application.Infrastructure.PushNotifications
+public class NotificationTextAttribute : Attribute
 {
-    public class NotificationTextAttribute : Attribute
+    public NotificationTextAttribute(string value)
     {
-        public NotificationTextAttribute(string value)
-        {
-            Value = value;
-        }
-
-        public string Value { get; }
+        Value = value;
     }
+
+    public string Value { get; }
 }

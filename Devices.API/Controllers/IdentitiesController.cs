@@ -1,8 +1,5 @@
-﻿using System;
-using System.Linq;
-using System.Security.Cryptography;
+﻿using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
 using Devices.Application.Devices.DTOs;
 using Devices.Application.Identities.CreateIdentity;
 using Enmeshed.BuildingBlocks.API;
@@ -15,84 +12,82 @@ using IdentityServer4.EntityFramework.Entities;
 using IdentityServer4.Extensions;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace Devices.API.Controllers
+namespace Devices.API.Controllers;
+
+[Route("api/v1/[controller]")]
+[Authorize(IdentityServerConstants.LocalApi.PolicyName)]
+public class IdentitiesController : ApiControllerBase
 {
-    [Route("api/v1/[controller]")]
-    [Authorize(IdentityServerConstants.LocalApi.PolicyName)]
-    public class IdentitiesController : ApiControllerBase
+    private readonly ConfigurationDbContext _identityServerConfigurationDbContext;
+
+    public IdentitiesController(IMediator mediator, ConfigurationDbContext identityServerConfigurationDbContext) : base(mediator)
     {
-        private readonly ConfigurationDbContext _identityServerConfigurationDbContext;
+        _identityServerConfigurationDbContext = identityServerConfigurationDbContext;
+    }
 
-        public IdentitiesController(IMediator mediator, ConfigurationDbContext identityServerConfigurationDbContext) : base(mediator)
+    [HttpPost]
+    [ProducesResponseType(typeof(HttpResponseEnvelopeResult<CreateIdentityResponse>), StatusCodes.Status201Created)]
+    [ProducesError(StatusCodes.Status400BadRequest)]
+    [AllowAnonymous]
+    public async Task<IActionResult> CreateIdentity(CreateIdentityRequest request)
+    {
+        var client = await _identityServerConfigurationDbContext.Clients.Include(c => c.ClientSecrets).FirstOrDefaultAsync(c => c.ClientId == request.ClientId);
+
+        if (client == null || !IsClientSecretCorrect(request, client))
+            throw new OperationFailedException(GenericApplicationErrors.Unauthorized());
+
+        var command = new CreateIdentityCommand
         {
-            _identityServerConfigurationDbContext = identityServerConfigurationDbContext;
-        }
-
-        [HttpPost]
-        [ProducesResponseType(typeof(HttpResponseEnvelopeResult<CreateIdentityResponse>), StatusCodes.Status201Created)]
-        [ProducesError(StatusCodes.Status400BadRequest)]
-        [AllowAnonymous]
-        public async Task<IActionResult> CreateIdentity(CreateIdentityRequest request)
-        {
-            var client = await _identityServerConfigurationDbContext.Clients.Include(c => c.ClientSecrets).FirstOrDefaultAsync(c => c.ClientId == request.ClientId);
-
-            if (client == null || !IsClientSecretCorrect(request, client))
-                throw new OperationFailedException(GenericApplicationErrors.Unauthorized());
-
-            var command = new CreateIdentityCommand
+            ClientId = request.ClientId,
+            DevicePassword = request.DevicePassword,
+            IdentityPublicKey = request.IdentityPublicKey,
+            SignedChallenge = new SignedChallengeDTO
             {
-                ClientId = request.ClientId,
-                DevicePassword = request.DevicePassword,
-                IdentityPublicKey = request.IdentityPublicKey,
-                SignedChallenge = new SignedChallengeDTO
-                {
-                    Challenge = request.SignedChallenge.Challenge,
-                    Signature = request.SignedChallenge.Signature
-                }
-            };
+                Challenge = request.SignedChallenge.Challenge,
+                Signature = request.SignedChallenge.Signature
+            }
+        };
 
-            var response = await _mediator.Send(command);
+        var response = await _mediator.Send(command);
 
-            return Created("", response);
-        }
-
-        private static bool IsClientSecretCorrect(CreateIdentityRequest request, Client client)
-        {
-            if (request.ClientSecret.IsNullOrEmpty())
-                return false;
-
-            var clientSecretHash = HashClientSecret(request);
-
-            var clientSecretMatches = client.ClientSecrets.Any(s => s.Value == clientSecretHash);
-
-            return clientSecretMatches;
-        }
-
-        private static string HashClientSecret(CreateIdentityRequest request)
-        {
-            using var hasher = SHA256.Create();
-            var bytes = Encoding.UTF8.GetBytes(request.ClientSecret);
-            var hash = Convert.ToBase64String(hasher.ComputeHash(bytes));
-            return hash;
-        }
+        return Created("", response);
     }
 
-    public class CreateIdentityRequest
+    private static bool IsClientSecretCorrect(CreateIdentityRequest request, Client client)
     {
-        public string ClientId { get; set; }
-        public string ClientSecret { get; set; }
-        public byte[] IdentityPublicKey { get; set; }
-        public string DevicePassword { get; set; }
-        public CreateIdentityRequestSignedChallenge SignedChallenge { get; set; }
+        if (request.ClientSecret.IsNullOrEmpty())
+            return false;
+
+        var clientSecretHash = HashClientSecret(request);
+
+        var clientSecretMatches = client.ClientSecrets.Any(s => s.Value == clientSecretHash);
+
+        return clientSecretMatches;
     }
 
-    public class CreateIdentityRequestSignedChallenge
+    private static string HashClientSecret(CreateIdentityRequest request)
     {
-        public string Challenge { get; set; }
-        public byte[] Signature { get; set; }
+        using var hasher = SHA256.Create();
+        var bytes = Encoding.UTF8.GetBytes(request.ClientSecret);
+        var hash = Convert.ToBase64String(hasher.ComputeHash(bytes));
+        return hash;
     }
+}
+
+public class CreateIdentityRequest
+{
+    public string ClientId { get; set; }
+    public string ClientSecret { get; set; }
+    public byte[] IdentityPublicKey { get; set; }
+    public string DevicePassword { get; set; }
+    public CreateIdentityRequestSignedChallenge SignedChallenge { get; set; }
+}
+
+public class CreateIdentityRequestSignedChallenge
+{
+    public string Challenge { get; set; }
+    public byte[] Signature { get; set; }
 }

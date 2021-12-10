@@ -1,27 +1,24 @@
-﻿using System.Threading;
-using System.Threading.Tasks;
-using Devices.Application.Infrastructure.PushNotifications;
+﻿using Devices.Application.Infrastructure.PushNotifications;
 using Enmeshed.BuildingBlocks.Application.Abstractions.Infrastructure.UserContext;
 using Enmeshed.DevelopmentKit.Identity.ValueObjects;
 using MediatR;
 
-namespace Devices.Application.PushNotifications.Commands.SendTestNotification
+namespace Devices.Application.PushNotifications.Commands.SendTestNotification;
+
+public class Handler : IRequestHandler<SendTestNotificationCommand, Unit>
 {
-    public class Handler : IRequestHandler<SendTestNotificationCommand, Unit>
+    private readonly IdentityAddress _activeIdentity;
+    private readonly IPushService _pushService;
+
+    public Handler(IUserContext userContext, IPushService pushService)
     {
-        private readonly IdentityAddress _activeIdentity;
-        private readonly IPushService _pushService;
+        _pushService = pushService;
+        _activeIdentity = userContext.GetAddress();
+    }
 
-        public Handler(IUserContext userContext, IPushService pushService)
-        {
-            _pushService = pushService;
-            _activeIdentity = userContext.GetAddress();
-        }
-
-        public async Task<Unit> Handle(SendTestNotificationCommand request, CancellationToken cancellationToken)
-        {
-            await _pushService.SendNotificationAsync(_activeIdentity, request.Data);
-            return Unit.Value;
-        }
+    public async Task<Unit> Handle(SendTestNotificationCommand request, CancellationToken cancellationToken)
+    {
+        await _pushService.SendNotificationAsync(_activeIdentity, request.Data);
+        return Unit.Value;
     }
 }

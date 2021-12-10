@@ -1,13 +1,12 @@
 ﻿using Enmeshed.BuildingBlocks.Application.FluentValidation;
 using FluentValidation;
 
-namespace Devices.Application.PushNotifications.Commands.SendTestNotification
+namespace Devices.Application.PushNotifications.Commands.SendTestNotification;
+
+public class Validator : AbstractValidator<SendTestNotificationCommand>
 {
-    public class Validator : AbstractValidator<SendTestNotificationCommand>
+    public Validator()
     {
-        public Validator()
-        {
-            RuleFor(r => r.Data).DetailedNotNull();
-        }
+        RuleFor(r => r.Data).DetailedNotNull();
     }
 }

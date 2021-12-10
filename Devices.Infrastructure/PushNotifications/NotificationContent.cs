@@ -4,38 +4,37 @@ using Enmeshed.Tooling;
 using Enmeshed.Tooling.Extensions;
 using Newtonsoft.Json;
 
-namespace Devices.Infrastructure.PushNotifications
+namespace Devices.Infrastructure.PushNotifications;
+
+public class NotificationContent
 {
-    public class NotificationContent
+    private const string PUSH_NOTIFICATION_POSTFIX = "PushNotification";
+
+    public NotificationContent(IdentityAddress recipient, object pushNotification)
     {
-        private const string PUSH_NOTIFICATION_POSTFIX = "PushNotification";
+        var notificationTypeName = pushNotification.GetType().Name;
 
-        public NotificationContent(IdentityAddress recipient, object pushNotification)
+        if (!notificationTypeName.Contains(PUSH_NOTIFICATION_POSTFIX))
         {
-            var notificationTypeName = pushNotification.GetType().Name;
+            EventName = "dynamic";
 
-            if (!notificationTypeName.Contains(PUSH_NOTIFICATION_POSTFIX))
-            {
-                EventName = "dynamic";
-
-                if (pushNotification is JsonElement jsonElement)
-                    Payload = JsonConvert.DeserializeObject<object>(jsonElement.GetRawText());
-                else
-                    Payload = pushNotification;
-            }
+            if (pushNotification is JsonElement jsonElement)
+                Payload = JsonConvert.DeserializeObject<object>(jsonElement.GetRawText());
             else
-            {
-                EventName = notificationTypeName.Replace(PUSH_NOTIFICATION_POSTFIX, "");
                 Payload = pushNotification;
-            }
-
-            SentAt = SystemTime.UtcNow.ToUniversalString();
-            AccountReference = recipient;
+        }
+        else
+        {
+            EventName = notificationTypeName.Replace(PUSH_NOTIFICATION_POSTFIX, "");
+            Payload = pushNotification;
         }
 
-        public string AccountReference { get; }
-        public string EventName { get; }
-        public string SentAt { get; }
-        public object Payload { get; }
+        SentAt = SystemTime.UtcNow.ToUniversalString();
+        AccountReference = recipient;
     }
+
+    public string AccountReference { get; }
+    public string EventName { get; }
+    public string SentAt { get; }
+    public object Payload { get; }
 }
