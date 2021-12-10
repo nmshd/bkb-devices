@@ -51,7 +51,7 @@ public static class NotificationHubClientExtensions
             foreach (var tag in registration.Tags)
             {
                 if (tag.Contains("InstallationId:"))
-                    installationId = new Guid(tag.Substring(tag.IndexOf(":") + 1)).ToString();
+                    installationId = new Guid(tag[(tag.IndexOf(":", StringComparison.InvariantCulture) + 1)..]).ToString();
             }
 
             deviceInstallationList.Add(installationId);
@@ -64,7 +64,7 @@ public static class NotificationHubClientExtensions
     {
         foreach (var installation in await client.GetAllInstallations())
         {
-            client.DeleteInstallation(installation);
+            await client.DeleteInstallationAsync(installation);
         }
     }
 }

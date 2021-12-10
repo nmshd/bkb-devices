@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using Devices.Application.Infrastructure.PushNotifications;
+﻿using Devices.Application.Infrastructure.PushNotifications;
 using Devices.Domain.Entities;
 using Enmeshed.BuildingBlocks.Application.Abstractions.Infrastructure.UserContext;
 using Enmeshed.DevelopmentKit.Identity.ValueObjects;
@@ -10,13 +9,11 @@ namespace Devices.Application.PushNotifications.Commands.UpdateDeviceRegistratio
 public class Handler : IRequestHandler<UpdateDeviceRegistrationCommand, Unit>
 {
     private readonly IdentityAddress _activeIdentity;
-    private readonly IMapper _mapper;
     private readonly IPushService _pushService;
 
-    public Handler(IPushService pushService, IUserContext userContext, IMapper mapper)
+    public Handler(IPushService pushService, IUserContext userContext)
     {
         _pushService = pushService;
-        _mapper = mapper;
         _activeIdentity = userContext.GetAddress();
     }
 

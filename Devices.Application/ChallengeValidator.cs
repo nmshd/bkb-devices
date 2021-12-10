@@ -38,11 +38,14 @@ public class ChallengeValidator
             throw new OperationFailedException(ApplicationErrors.Devices.InvalidSignature());
     }
 
-    private async Task ValidateChallengeExpiracy(string challengeString)
+    private async Task ValidateChallengeExpiracy(string serializedChallenge)
     {
-        var idOfSignedChallenge = JsonSerializer.Deserialize<ChallengeDTO>(challengeString, new JsonSerializerOptions {PropertyNameCaseInsensitive = true}).Id;
+        var deserializedChallenge = JsonSerializer.Deserialize<ChallengeDTO>(serializedChallenge, new JsonSerializerOptions {PropertyNameCaseInsensitive = true});
 
-        var challenge = await _dbContext.SetReadOnly<Challenge>().FirstOrDefaultAsync(c => c.Id == idOfSignedChallenge);
+        if (deserializedChallenge == null)
+            throw new NotFoundException(nameof(Challenge));
+
+        var challenge = await _dbContext.SetReadOnly<Challenge>().FirstOrDefaultAsync(c => c.Id == deserializedChallenge.Id);
 
         if (challenge == null)
             throw new NotFoundException(nameof(Challenge));

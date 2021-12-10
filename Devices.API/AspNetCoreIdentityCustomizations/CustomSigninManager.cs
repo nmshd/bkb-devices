@@ -27,12 +27,12 @@ public class CustomSigninManager : SignInManager<ApplicationUser>
     {
         var result = await base.CheckPasswordSignInAsync(user, password, lockoutOnFailure);
 
-        if (result.Succeeded)
-        {
-            user.LoginOccurred();
-            _dbContext.Set<ApplicationUser>().Update(user);
-            await _dbContext.SaveChangesAsync(CancellationToken.None);
-        }
+        if (!result.Succeeded)
+            return result;
+
+        user.LoginOccurred();
+        _dbContext.Set<ApplicationUser>().Update(user);
+        await _dbContext.SaveChangesAsync(CancellationToken.None);
 
         return result;
     }

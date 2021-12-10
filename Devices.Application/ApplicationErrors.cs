@@ -21,11 +21,6 @@ public static class ApplicationErrors
             return new ApplicationError("error.platform.validation.device.invalidPublicKeyFormat", "The format of the given public key is not supported.");
         }
 
-        public static ApplicationError InvalidSignatureFormat()
-        {
-            return new ApplicationError("error.platform.validation.device.invalidSignatureFormat", "The format of the given signature is not supported.");
-        }
-
         public static ApplicationError InvalidSignature()
         {
             return new ApplicationError("error.platform.validation.device.invalidSignature", "The given signature is not valid.");

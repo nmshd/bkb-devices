@@ -4,6 +4,7 @@ using FluentValidation;
 
 namespace Devices.Application.PushNotifications.Commands.UpdateDeviceRegistration;
 
+// ReSharper disable once UnusedMember.Global
 public class UpdateDeviceRegistrationValidator : AbstractValidator<UpdateDeviceRegistrationCommand>
 {
     public UpdateDeviceRegistrationValidator()

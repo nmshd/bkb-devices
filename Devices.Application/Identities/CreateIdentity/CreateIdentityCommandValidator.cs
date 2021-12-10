@@ -4,6 +4,7 @@ using FluentValidation;
 
 namespace Devices.Application.Identities.CreateIdentity;
 
+// ReSharper disable once UnusedMember.Global
 public class CreateIdentityCommandValidator : AbstractValidator<CreateIdentityCommand>
 {
     public CreateIdentityCommandValidator()

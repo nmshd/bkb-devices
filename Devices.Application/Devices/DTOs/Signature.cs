@@ -42,7 +42,7 @@ public class Signature
 
 public enum SignatureAlgorithm
 {
-    Ecdsa_P256 = 1,
-    Ecdsa_P521 = 2,
-    Ecdsa_Ed25519 = 3
+    EcdsaP256 = 1,
+    EcdsaP521 = 2,
+    EcdsaEd25519 = 3
 }

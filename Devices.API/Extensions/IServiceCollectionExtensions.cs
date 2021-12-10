@@ -4,6 +4,7 @@ using System.Text.Json.Serialization;
 using Devices.API.ApplicationInsights.TelemetryInitializers;
 using Devices.API.AspNetCoreIdentityCustomizations;
 using Devices.API.Certificates;
+using Devices.Application.Devices.DTOs;
 using Devices.Domain.Entities;
 using Devices.Infrastructure.Persistence.Database;
 using Enmeshed.BuildingBlocks.API;
@@ -39,15 +40,19 @@ public static class IServiceCollectionExtensions
             {
                 options.InvalidModelStateResponseFactory = context =>
                 {
-                    var firstPropertyWithError = context.ModelState.First(p => p.Value.Errors.Count > 0);
+                    var firstPropertyWithError = context.ModelState.First(p => p.Value != null && p.Value.Errors.Count > 0);
                     var nameOfPropertyWithError = firstPropertyWithError.Key;
-                    var firstError = firstPropertyWithError.Value.Errors.First();
+                    var firstError = firstPropertyWithError.Value!.Errors.First();
                     var firstErrorMessage = !string.IsNullOrWhiteSpace(firstError.ErrorMessage)
                         ? firstError.ErrorMessage
-                        : firstError.Exception.Message;
+                        : firstError.Exception != null
+                            ? firstError.Exception.Message
+                            : "";
 
-                    return new BadRequestObjectResult(HttpError.ForProduction("error.platform.inputCannotBeParsed",
-                        $"'{nameOfPropertyWithError}': {firstErrorMessage}", "")); // TODO: add docs
+                    var formattedMessage = string.IsNullOrEmpty(nameOfPropertyWithError) ? firstErrorMessage : $"'{nameOfPropertyWithError}': {firstErrorMessage}";
+                    context.HttpContext.Response.ContentType = "application/json";
+                    var responsePayload = new HttpResponseEnvelopeError(HttpError.ForProduction("error.platform.inputCannotBeParsed", formattedMessage, "")); // TODO: add docs
+                    return new BadRequestObjectResult(responsePayload);
                 };
             })
             .AddJsonOptions(options =>
@@ -57,6 +62,7 @@ public static class IServiceCollectionExtensions
                 options.JsonSerializerOptions.Converters.Add(new UrlSafeBase64ToByteArrayJsonConverter());
                 options.JsonSerializerOptions.Converters.Add(new DeviceIdJsonConverter());
                 options.JsonSerializerOptions.Converters.Add(new IdentityAddressJsonConverter());
+                options.JsonSerializerOptions.Converters.Add(new PublicKey.PublicKeyDTOJsonConverter()); 
 
                 foreach (var converter in aspNetCoreOptions.Json.Converters)
                 {
@@ -241,7 +247,6 @@ public static class IServiceCollectionExtensions
             public string Authority { get; set; }
             public string ValidIssuer { get; set; }
             public string Audience { get; set; }
-            public bool SaveToken { get; set; }
         }
     }
 

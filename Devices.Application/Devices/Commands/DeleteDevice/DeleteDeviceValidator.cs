@@ -4,6 +4,7 @@ using FluentValidation;
 
 namespace Devices.Application.Devices.Commands.DeleteDevice;
 
+// ReSharper disable once UnusedMember.Global
 public class DeleteDeviceValidator : AbstractValidator<DeleteDeviceCommand>
 {
     public DeleteDeviceValidator()
