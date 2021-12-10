@@ -2,12 +2,11 @@
 using Enmeshed.BuildingBlocks.Application.Abstractions.Infrastructure.Mapping;
 using MediatR;
 
-namespace Devices.Application.PushNotifications.Commands.UpdateDeviceRegistration
+namespace Devices.Application.PushNotifications.Commands.UpdateDeviceRegistration;
+
+public class UpdateDeviceRegistrationCommand : IRequest<Unit>, IMapTo<DeviceRegistration>
 {
-    public class UpdateDeviceRegistrationCommand : IRequest<Unit>, IMapTo<DeviceRegistration>
-    {
-        public string Platform { get; set; }
-        public string Handle { get; set; }
-        public Guid InstallationId { get; set; }
-    }
+    public string Platform { get; set; }
+    public string Handle { get; set; }
+    public Guid InstallationId { get; set; }
 }

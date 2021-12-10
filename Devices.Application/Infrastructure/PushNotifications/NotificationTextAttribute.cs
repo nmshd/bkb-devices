@@ -1,12 +1,11 @@
-﻿namespace Devices.Application.Infrastructure.PushNotifications
-{
-    public class NotificationTextAttribute : Attribute
-    {
-        public NotificationTextAttribute(string value)
-        {
-            Value = value;
-        }
+﻿namespace Devices.Application.Infrastructure.PushNotifications;
 
-        public string Value { get; }
+public class NotificationTextAttribute : Attribute
+{
+    public NotificationTextAttribute(string value)
+    {
+        Value = value;
     }
+
+    public string Value { get; }
 }

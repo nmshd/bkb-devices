@@ -3,22 +3,21 @@ using Devices.Application.Infrastructure.PushNotifications;
 using Devices.Application.Infrastructure.PushNotifications.Datawallet;
 using Enmeshed.BuildingBlocks.Application.Abstractions.Infrastructure.EventBus;
 
-namespace Devices.Application.IntegrationEvents.Incoming.DatawalletModificationCreated
+namespace Devices.Application.IntegrationEvents.Incoming.DatawalletModificationCreated;
+
+public class DatawalletModifiedIntegrationEventHandler : IIntegrationEventHandler<DatawalletModifiedIntegrationEvent>
 {
-    public class DatawalletModifiedIntegrationEventHandler : IIntegrationEventHandler<DatawalletModifiedIntegrationEvent>
+    private readonly IMapper _mapper;
+    private readonly IPushService _pushService;
+
+    public DatawalletModifiedIntegrationEventHandler(IPushService pushService, IMapper mapper)
     {
-        private readonly IMapper _mapper;
-        private readonly IPushService _pushService;
+        _pushService = pushService;
+        _mapper = mapper;
+    }
 
-        public DatawalletModifiedIntegrationEventHandler(IPushService pushService, IMapper mapper)
-        {
-            _pushService = pushService;
-            _mapper = mapper;
-        }
-
-        public async Task Handle(DatawalletModifiedIntegrationEvent integrationEvent)
-        {
-            await _pushService.SendNotificationAsync(integrationEvent.Identity, new DatawalletModificationsCreatedPushNotification(integrationEvent.ModifiedByDevice));
-        }
+    public async Task Handle(DatawalletModifiedIntegrationEvent integrationEvent)
+    {
+        await _pushService.SendNotificationAsync(integrationEvent.Identity, new DatawalletModificationsCreatedPushNotification(integrationEvent.ModifiedByDevice));
     }
 }

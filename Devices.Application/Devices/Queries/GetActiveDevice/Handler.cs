@@ -8,32 +8,31 @@ using Enmeshed.BuildingBlocks.Application.Abstractions.Infrastructure.UserContex
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace Devices.Application.Devices.Queries.GetActiveDevice
+namespace Devices.Application.Devices.Queries.GetActiveDevice;
+
+public class Handler : IRequestHandler<GetActiveDeviceQuery, DeviceDTO>
 {
-    public class Handler : IRequestHandler<GetActiveDeviceQuery, DeviceDTO>
+    private readonly IDbContext _dbContext;
+    private readonly IMapper _mapper;
+    private readonly IUserContext _userContext;
+
+    public Handler(IDbContext dbContext, IMapper mapper, IUserContext userContext)
     {
-        private readonly IDbContext _dbContext;
-        private readonly IMapper _mapper;
-        private readonly IUserContext _userContext;
+        _dbContext = dbContext;
+        _mapper = mapper;
+        _userContext = userContext;
+    }
 
-        public Handler(IDbContext dbContext, IMapper mapper, IUserContext userContext)
-        {
-            _dbContext = dbContext;
-            _mapper = mapper;
-            _userContext = userContext;
-        }
+    public async Task<DeviceDTO> Handle(GetActiveDeviceQuery request, CancellationToken cancellationToken)
+    {
+        var device = await _dbContext
+            .SetReadOnly<Device>()
+            .NotDeleted()
+            .WithId(_userContext.GetDeviceId())
+            .IncludeUser()
+            .ProjectTo<DeviceDTO>(_mapper.ConfigurationProvider)
+            .FirstOrDefaultAsync(cancellationToken);
 
-        public async Task<DeviceDTO> Handle(GetActiveDeviceQuery request, CancellationToken cancellationToken)
-        {
-            var device = await _dbContext
-                .SetReadOnly<Device>()
-                .NotDeleted()
-                .WithId(_userContext.GetDeviceId())
-                .IncludeUser()
-                .ProjectTo<DeviceDTO>(_mapper.ConfigurationProvider)
-                .FirstOrDefaultAsync(cancellationToken);
-
-            return device;
-        }
+        return device;
     }
 }

@@ -7,37 +7,36 @@ using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Devices.Application.Extensions
+namespace Devices.Application.Extensions;
+
+public static class IServiceCollectionExtensions
 {
-    public static class IServiceCollectionExtensions
+    public static void AddApplication(this IServiceCollection services)
     {
-        public static void AddApplication(this IServiceCollection services)
-        {
-            services.AddMediatR(typeof(RegisterDeviceCommand).GetTypeInfo().Assembly);
-            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
-            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestValidationBehavior<,>));
-            services.AddAutoMapper(typeof(AutoMapperProfile).Assembly);
-            services.AddValidatorsFromAssembly(typeof(RegisterDeviceCommandValidator).Assembly);
-            services.AddScoped<ChallengeValidator>();
-            AddEventHandlers(services);
-        }
+        services.AddMediatR(typeof(RegisterDeviceCommand).GetTypeInfo().Assembly);
+        services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
+        services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestValidationBehavior<,>));
+        services.AddAutoMapper(typeof(AutoMapperProfile).Assembly);
+        services.AddValidatorsFromAssembly(typeof(RegisterDeviceCommandValidator).Assembly);
+        services.AddScoped<ChallengeValidator>();
+        AddEventHandlers(services);
+    }
 
-        private static void AddEventHandlers(IServiceCollection services)
+    private static void AddEventHandlers(IServiceCollection services)
+    {
+        foreach (var eventHandler in GetAllIntegrationEventHandlers())
         {
-            foreach (var eventHandler in GetAllIntegrationEventHandlers())
-            {
-                services.AddTransient(eventHandler);
-            }
+            services.AddTransient(eventHandler);
         }
+    }
 
-        private static IEnumerable<Type> GetAllIntegrationEventHandlers()
-        {
-            var integrationEventHandlerTypes = from t in Assembly.GetExecutingAssembly().GetTypes()
-                from i in t.GetInterfaces()
-                where t.IsClass && !t.IsAbstract && i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IIntegrationEventHandler<>)
-                select t;
+    private static IEnumerable<Type> GetAllIntegrationEventHandlers()
+    {
+        var integrationEventHandlerTypes = from t in Assembly.GetExecutingAssembly().GetTypes()
+            from i in t.GetInterfaces()
+            where t.IsClass && !t.IsAbstract && i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IIntegrationEventHandler<>)
+            select t;
 
-            return integrationEventHandlerTypes;
-        }
+        return integrationEventHandlerTypes;
     }
 }

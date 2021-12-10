@@ -1,20 +1,19 @@
-﻿namespace Devices.Domain.Entities
+﻿namespace Devices.Domain.Entities;
+
+public class DeviceRegistration
 {
-    public class DeviceRegistration
-    {
 #pragma warning disable CS8618
-        private DeviceRegistration() { }
+    private DeviceRegistration() { }
 #pragma warning restore CS8618
 
-        public DeviceRegistration(string platform, string handle, Guid installationId)
-        {
-            Platform = platform;
-            Handle = handle;
-            InstallationId = installationId;
-        }
-
-        public string Platform { get; }
-        public string Handle { get; }
-        public Guid InstallationId { get; }
+    public DeviceRegistration(string platform, string handle, Guid installationId)
+    {
+        Platform = platform;
+        Handle = handle;
+        InstallationId = installationId;
     }
+
+    public string Platform { get; }
+    public string Handle { get; }
+    public Guid InstallationId { get; }
 }
