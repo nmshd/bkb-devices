@@ -106,7 +106,6 @@ public class OAuthClientManager
     }
 }
 
-
 public static class ClientIdGenerator
 {
     public const int MAX_LENGTH = 20;
