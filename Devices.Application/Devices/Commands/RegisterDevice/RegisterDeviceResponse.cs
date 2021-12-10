@@ -1,5 +1,4 @@
-﻿using System;
-using Enmeshed.DevelopmentKit.Identity.ValueObjects;
+﻿using Enmeshed.DevelopmentKit.Identity.ValueObjects;
 
 namespace Devices.Application.Devices.Commands.RegisterDevice
 {

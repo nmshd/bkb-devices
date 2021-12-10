@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Devices.AdminCli
+﻿namespace Devices.AdminCli
 {
     public static class ConsoleHelpers
     {

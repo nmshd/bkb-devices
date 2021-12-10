@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
+﻿using System.Security.Claims;
 using Devices.API.Models;
 using Devices.Domain.Entities;
 using Enmeshed.Tooling;

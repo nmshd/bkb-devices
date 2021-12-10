@@ -1,5 +1,4 @@
-﻿using System;
-using Enmeshed.Tooling;
+﻿using Enmeshed.Tooling;
 
 namespace Devices.Domain.Entities
 {

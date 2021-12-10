@@ -1,9 +1,5 @@
-﻿using System;
-using System.Data.SqlClient;
-using Microsoft.AspNetCore.Hosting;
+﻿using System.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using Polly;
 
 namespace Devices.API.ExtensionMethods

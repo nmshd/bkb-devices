@@ -1,9 +1,6 @@
-﻿using System;
-using System.IO;
-using System.Reflection;
+﻿using System.Reflection;
 using System.Security.Cryptography.X509Certificates;
 using Enmeshed.Tooling.Extensions;
-using Microsoft.Extensions.Configuration;
 
 namespace Devices.API.Certificates
 {

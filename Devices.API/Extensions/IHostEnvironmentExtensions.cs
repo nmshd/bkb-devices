@@ -1,6 +1,4 @@
-﻿using Microsoft.Extensions.Hosting;
-
-namespace Devices.API.Extensions
+﻿namespace Devices.API.Extensions
 {
     public static class IHostEnvironmentExtensions
     {

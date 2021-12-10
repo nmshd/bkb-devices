@@ -1,12 +1,9 @@
-﻿using System;
-using Azure.Identity;
+﻿using Azure.Identity;
 using Devices.API.ExtensionMethods;
 using Devices.Infrastructure.Persistence.Database;
 using Enmeshed.Tooling.Extensions;
 using IdentityServer4.EntityFramework.DbContexts;
 using Microsoft.AspNetCore;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
 
 namespace Devices.API
 {

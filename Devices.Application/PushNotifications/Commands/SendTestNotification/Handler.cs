@@ -1,6 +1,4 @@
-﻿using System.Threading;
-using System.Threading.Tasks;
-using Devices.Application.Infrastructure.PushNotifications;
+﻿using Devices.Application.Infrastructure.PushNotifications;
 using Enmeshed.BuildingBlocks.Application.Abstractions.Infrastructure.UserContext;
 using Enmeshed.DevelopmentKit.Identity.ValueObjects;
 using MediatR;

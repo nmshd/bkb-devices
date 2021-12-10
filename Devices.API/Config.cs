@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Devices.API.Models;
+﻿using Devices.API.Models;
 using IdentityServer4.Models;
 
 namespace Devices.API

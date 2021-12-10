@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Dynamic;
+﻿using System.Dynamic;
 using System.Globalization;
-using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using System.Threading;
-using System.Threading.Tasks;
 using Devices.Application.Devices.DTOs;
 using Devices.Application.Extensions;
 using Devices.Domain.Entities;

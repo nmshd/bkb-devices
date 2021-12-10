@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using Devices.Application.Infrastructure.PushNotifications;
+﻿using Devices.Application.Infrastructure.PushNotifications;
 using Devices.Application.Infrastructure.PushNotifications.ExternalEvents;
 using Enmeshed.BuildingBlocks.Application.Abstractions.Infrastructure.EventBus;
 

@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using Devices.Application.AutoMapper;
-using FluentAssertions;
 using Xunit;
 
 namespace Devices.Application.Tests.Tests.AutoMapper

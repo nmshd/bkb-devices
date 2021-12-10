@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using Devices.Application;
+﻿using Devices.Application;
 using Devices.Application.Devices.Commands.ChangePassword;
 using Devices.Application.Devices.Commands.DeleteDevice;
 using Devices.Application.Devices.Commands.RegisterDevice;
@@ -16,7 +14,6 @@ using Enmeshed.DevelopmentKit.Identity.ValueObjects;
 using IdentityServer4;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 

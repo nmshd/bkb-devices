@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Devices.Application.DTOs
+﻿namespace Devices.Application.DTOs
 {
     public class ChallengeDTO
     {

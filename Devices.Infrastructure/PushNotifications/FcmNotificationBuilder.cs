@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Dynamic;
+﻿using System.Dynamic;
 using Microsoft.Azure.NotificationHubs;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;

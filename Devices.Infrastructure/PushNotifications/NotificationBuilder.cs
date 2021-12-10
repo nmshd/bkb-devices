@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.Azure.NotificationHubs;
+﻿using Microsoft.Azure.NotificationHubs;
 
 namespace Devices.Infrastructure.PushNotifications
 {

@@ -1,11 +1,7 @@
-﻿using System.Threading;
-using System.Threading.Tasks;
-using Devices.Domain.Entities;
+﻿using Devices.Domain.Entities;
 using Enmeshed.BuildingBlocks.Application.Abstractions.Infrastructure.Persistence.Database;
 using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
 namespace Devices.API.AspNetCoreIdentityCustomizations

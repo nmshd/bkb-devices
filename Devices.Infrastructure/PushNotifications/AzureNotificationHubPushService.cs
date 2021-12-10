@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Reflection;
+﻿using System.Reflection;
 using System.Text.Encodings.Web;
 using System.Text.Json;
-using System.Threading.Tasks;
 using Devices.Application.Infrastructure.PushNotifications;
 using Devices.Domain.Entities;
 using Enmeshed.DevelopmentKit.Identity.ValueObjects;

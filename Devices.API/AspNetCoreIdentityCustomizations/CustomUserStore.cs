@@ -1,7 +1,4 @@
-﻿using System;
-using System.Linq.Expressions;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using System.Linq.Expressions;
 using Devices.Domain.Entities;
 using Devices.Infrastructure.Persistence.Database;
 using Microsoft.AspNetCore.Identity;

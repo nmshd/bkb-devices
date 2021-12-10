@@ -1,8 +1,5 @@
-﻿using System;
-using System.Linq;
-using System.Security.Cryptography;
+﻿using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
 using Devices.Application.Devices.DTOs;
 using Devices.Application.Identities.CreateIdentity;
 using Enmeshed.BuildingBlocks.API;
@@ -15,7 +12,6 @@ using IdentityServer4.EntityFramework.Entities;
 using IdentityServer4.Extensions;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 

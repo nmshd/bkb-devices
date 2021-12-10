@@ -1,5 +1,4 @@
 ﻿using System.Text.Json;
-using System.Threading.Tasks;
 using Devices.Application.Devices.DTOs;
 using Devices.Application.DTOs;
 using Devices.Domain.Entities;

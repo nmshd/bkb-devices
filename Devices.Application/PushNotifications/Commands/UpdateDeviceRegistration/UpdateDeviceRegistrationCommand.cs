@@ -1,5 +1,4 @@
-﻿using System;
-using Devices.Domain.Entities;
+﻿using Devices.Domain.Entities;
 using Enmeshed.BuildingBlocks.Application.Abstractions.Infrastructure.Mapping;
 using MediatR;
 

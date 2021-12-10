@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Devices.Application.Devices.DTOs;
+﻿using Devices.Application.Devices.DTOs;
 using Enmeshed.BuildingBlocks.Application.Pagination;
 
 namespace Devices.Application.Devices.Queries.ListDevices

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Devices.Domain.Entities
+﻿namespace Devices.Domain.Entities
 {
     public class DeviceRegistration
     {

@@ -1,4 +1,3 @@
-using System;
 using Enmeshed.DevelopmentKit.Identity.ValueObjects;
 
 namespace Devices.Application.Tests

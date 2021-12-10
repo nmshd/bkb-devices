@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Reflection;
+﻿using System.Reflection;
 using System.Text.Json;
 using Devices.Infrastructure.Persistence.Database;
 using IdentityServer4.EntityFramework.Storage;

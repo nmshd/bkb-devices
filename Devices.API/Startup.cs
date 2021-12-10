@@ -1,5 +1,4 @@
-﻿using System;
-using Devices.API.Extensions;
+﻿using Devices.API.Extensions;
 using Devices.Application;
 using Devices.Application.Extensions;
 using Devices.Infrastructure.EventBus;
@@ -11,11 +10,7 @@ using Enmeshed.Crypto.Abstractions;
 using Enmeshed.Crypto.Implementations;
 using IdentityServer4.Extensions;
 using Microsoft.ApplicationInsights.Extensibility;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpOverrides;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace Devices.API
 {

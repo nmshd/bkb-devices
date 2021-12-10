@@ -1,7 +1,4 @@
-﻿using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using Devices.Application.Devices.DTOs;
+﻿using Devices.Application.Devices.DTOs;
 using Devices.Application.Extensions;
 using Devices.Domain.Entities;
 using Enmeshed.BuildingBlocks.Application.Abstractions.Exceptions;

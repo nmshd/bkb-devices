@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using Devices.Application.Infrastructure.PushNotifications;
 using Devices.Application.Infrastructure.PushNotifications.Datawallet;
 using Enmeshed.BuildingBlocks.Application.Abstractions.Infrastructure.EventBus;

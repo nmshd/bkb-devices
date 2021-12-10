@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Devices.Application.Infrastructure.PushNotifications
+﻿namespace Devices.Application.Infrastructure.PushNotifications
 {
     public class NotificationTextAttribute : Attribute
     {
