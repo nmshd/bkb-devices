@@ -20,7 +20,7 @@ namespace Devices.Infrastructure.Tests.Tests
                 .Create(NotificationPlatform.Fcm)
                 .SetNotificationId(1)
                 .SetNotificationText("someNotificationTextTitle", "someNotificationTextBody")
-                .AddContent(new NotificationContent(IdentityAddress.Create(new byte[] {0}, "id1"), new {SomeProperty = "someValue"}))
+                .AddContent(new NotificationContent(IdentityAddress.Parse("id1KJnD8ipfckRQ1ivAhNVLtypmcVM5vPX4j"), new {SomeProperty = "someValue"}))
                 .Build();
 
             var formattedBuiltNotification = FormatJson(builtNotification.Body);
@@ -46,6 +46,7 @@ namespace Devices.Infrastructure.Tests.Tests
             formattedBuiltNotification.Should().Be(expectedNotification);
 
             builtNotification.Headers.Should().BeEmpty();
+            builtNotification.ContentType.Should().Be("application/json;charset=utf-8");
         }
 
         private string FormatJson(string jsonString)
