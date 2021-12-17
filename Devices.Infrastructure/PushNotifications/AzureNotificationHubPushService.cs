@@ -11,7 +11,7 @@ namespace Devices.Infrastructure.PushNotifications;
 
 public class AzureNotificationHubPushService : IPushService
 {
-    private static readonly NotificationPlatform[] SupportedPlatforms = {NotificationPlatform.Fcm, NotificationPlatform.Apns};
+    private static readonly NotificationPlatform[] SUPPORTED_PLATFORMS = {NotificationPlatform.Fcm, NotificationPlatform.Apns};
     private readonly ILogger<AzureNotificationHubPushService> _logger;
     private readonly NotificationHubClient _notificationHubClient;
 
@@ -45,14 +45,13 @@ public class AzureNotificationHubPushService : IPushService
     {
         var notificationContent = new NotificationContent(recipient, pushNotification);
         var notificationId = GetNotificationId(pushNotification);
-        var notificationTextTitle = GetNotificationTextTitle(pushNotification);
-        var notificationTextBody = GetNotificationTextBody(pushNotification);
-        
-        foreach (var notificationPlatform in SupportedPlatforms)
+        var notificationText = GetNotificationText(pushNotification);
+
+        foreach (var notificationPlatform in SUPPORTED_PLATFORMS)
         {
             var notification = NotificationBuilder
                 .Create(notificationPlatform)
-                .SetNotificationText(notificationTextTitle, notificationTextBody)
+                .SetNotificationText(notificationText.Title, notificationText.Body)
                 .SetNotificationId(notificationId)
                 .AddContent(notificationContent)
                 .Build();
@@ -62,18 +61,13 @@ public class AzureNotificationHubPushService : IPushService
             _logger.LogTrace($"Successfully sent push notification to identity '{recipient}' on platform '{notificationPlatform}': {notification.ToJson()}");
         }
     }
-    
-    private static string GetNotificationTextTitle(object pushNotification)
+
+    private static (string Title, string Body) GetNotificationText(object pushNotification)
     {
         var attribute = pushNotification.GetType().GetCustomAttribute<NotificationTextAttribute>();
-        return attribute == null ? "Aktualisierungen eingegangen" : attribute.Value;
+        return attribute == null ? ("", "") : (attribute.Title, attribute.Body);
     }
-
-    private static string GetNotificationTextBody(object pushNotification)
-    {
-        return "Es sind neue Aktualisierungen in der Enmeshed App vorhanden.";
-    }
-
+    
     private static int GetNotificationId(object pushNotification)
     {
         var attribute = pushNotification.GetType().GetCustomAttribute<NotificationIdAttribute>();
@@ -97,13 +91,13 @@ public static class TypeExtensions
 
 public static class NotificationExtensions
 {
-    private static readonly JsonSerializerOptions SerializerOptions = new()
+    private static readonly JsonSerializerOptions SERIALIZER_OPTIONS = new()
     {
         Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping
     };
 
     public static string ToJson(this Notification notification)
     {
-        return JsonSerializer.Serialize(notification, SerializerOptions);
+        return JsonSerializer.Serialize(notification, SERIALIZER_OPTIONS);
     }
 }
