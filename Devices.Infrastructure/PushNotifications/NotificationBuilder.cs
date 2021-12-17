@@ -9,7 +9,7 @@ namespace Devices.Infrastructure.PushNotifications;
 
 public abstract class NotificationBuilder
 {
-    protected JsonSerializerOptions _jsonSerializerOptions = new JsonSerializerOptions {Converters = {new DateTimeConverter()}, PropertyNamingPolicy = JsonNamingPolicy.CamelCase, Encoder = JavaScriptEncoder.Create(UnicodeRanges.BasicLatin, UnicodeRanges.Latin1Supplement)};
+    protected JsonSerializerOptions _jsonSerializerOptions = new() {Converters = {new DateTimeConverter()}, PropertyNamingPolicy = JsonNamingPolicy.CamelCase /*, Encoder = JavaScriptEncoder.Create(UnicodeRanges.BasicLatin, UnicodeRanges.Latin1Supplement)*/};
     protected readonly Dictionary<string, string> _headers = new();
 
     public static NotificationBuilder Create(NotificationPlatform platform)
@@ -51,16 +51,3 @@ public class DateTimeConverter : JsonConverter<DateTime>
         writer.WriteStringValue(value.ToUniversalString());
     }
 }
-
-// public class NotificationContentConverter : JsonConverter<NotificationContent>
-// {
-//     public override NotificationContent Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
-//     {
-//         throw new NotImplementedException();
-//     }
-//
-//     public override void Write(Utf8JsonWriter writer, NotificationContent value, JsonSerializerOptions options)
-//     {
-//         writer.WriteStartObject(value.ToUniversalString());
-//     }
-// }
