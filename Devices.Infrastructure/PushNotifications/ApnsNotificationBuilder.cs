@@ -11,27 +11,14 @@ public class ApnsNotificationBuilder : NotificationBuilder
 {
     private readonly Payload _notification = new();
 
-    private ApnsNotificationBuilder()
+    public ApnsNotificationBuilder()
     {
+        AddHeader("apns-priority", "5");
     }
-
-    public static ApnsNotificationBuilder BuildDefaultNotification()
-    {
-        var builder = new ApnsNotificationBuilder();
-
-        builder
-            .AddHeader("apns-priority", "5");
-
-        return builder;
-    }
-
+    
     public override NotificationBuilder AddContent(NotificationContent content)
     {
         _notification.Content = content;
-        // _notification.Content.AccountReference = content.AccountReference;
-        // _notification.Content.EventName = content.EventName;
-        // _notification.Content.SentAt = content.SentAt;
-        // _notification.Content.Payload = content.Payload;
 
         SetContentAvailable(true);
 
@@ -60,7 +47,7 @@ public class ApnsNotificationBuilder : NotificationBuilder
         return this;
     }
 
-    public override Notification Create()
+    public override Notification Build()
     {
         var serializedPayload = JsonSerializer.Serialize(_notification, _jsonSerializerOptions);
         var notification = new AppleNotification(serializedPayload, _headers);
@@ -79,23 +66,7 @@ public class ApnsNotificationBuilder : NotificationBuilder
 
         [JsonPropertyName("aps")]
         public PayloadAps APS { get; } = new();
-
-        public class PayloadContent
-        {
-
-            [JsonPropertyName("accRef")]
-            public string AccountReference { get; set; }
-
-            [JsonPropertyName("eventName")]
-            public string EventName { get; set; }
-
-            [JsonPropertyName("sentAt")]
-            public DateTime SentAt { get; set; }
-
-            [JsonPropertyName("payload")]
-            public object Payload { get; set; }
-        }
-
+        
         public class PayloadAps
         {
             [JsonPropertyName("content-available")]

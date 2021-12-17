@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text.Json;
 using Devices.Infrastructure.PushNotifications;
 using Enmeshed.DevelopmentKit.Identity.ValueObjects;
 using Enmeshed.Tooling;
 using FluentAssertions;
+using Microsoft.Azure.NotificationHubs;
 using Xunit;
 
 namespace Devices.Infrastructure.Tests.Tests
@@ -17,17 +17,17 @@ namespace Devices.Infrastructure.Tests.Tests
         {
             SystemTime.Set(DateTime.Parse("2021-01-01T00:00:00.000Z"));
 
-            var builtNotification = ApnsNotificationBuilder
-                .BuildDefaultNotification()
-                .SetNotificationId(0)
-                .AddContent(new NotificationContent(IdentityAddress.Create(new byte[] {0}, "id1"), new {SomeProperty = "someValue"}))
+            var builtNotification = NotificationBuilder
+                .Create(NotificationPlatform.Apns)
+                .SetNotificationId(1)
                 .SetNotificationText("someNotificationTextTitle", "someNotificationTextBody")
-                .Create();
+                .AddContent(new NotificationContent(IdentityAddress.Create(new byte[] {0}, "id1"), new {SomeProperty = "someValue"}))
+                .Build();
 
             var formattedBuiltNotification = FormatJson(builtNotification.Body);
 
             var expectedNotification = FormatJson(@"{
-                'notId': 0,
+                'notId': 1,
                 'content': {
                     'accRef': 'id1KJnD8ipfckRQ1ivAhNVLtypmcVM5vPX4j',
                     'eventName': 'dynamic',

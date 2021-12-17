@@ -47,22 +47,22 @@ public class AzureNotificationHubPushService : IPushService
         var notificationId = GetNotificationId(pushNotification);
         var notificationTextTitle = GetNotificationTextTitle(pushNotification);
         var notificationTextBody = GetNotificationTextBody(pushNotification);
-
+        
         foreach (var notificationPlatform in SupportedPlatforms)
         {
             var notification = NotificationBuilder
-                .BuildDefaultNotification(notificationPlatform)
+                .Create(notificationPlatform)
                 .SetNotificationText(notificationTextTitle, notificationTextBody)
                 .SetNotificationId(notificationId)
                 .AddContent(notificationContent)
-                .Create();
+                .Build();
 
             await _notificationHubClient.SendNotificationAsync(notification, GetNotificationTags(recipient));
 
             _logger.LogTrace($"Successfully sent push notification to identity '{recipient}' on platform '{notificationPlatform}': {notification.ToJson()}");
         }
     }
-
+    
     private static string GetNotificationTextTitle(object pushNotification)
     {
         var attribute = pushNotification.GetType().GetCustomAttribute<NotificationTextAttribute>();

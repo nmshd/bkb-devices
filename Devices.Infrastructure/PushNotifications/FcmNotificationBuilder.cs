@@ -11,19 +11,14 @@ public class FcmNotificationBuilder : NotificationBuilder
 {
     private readonly Payload _notification = new();
 
-    private FcmNotificationBuilder() { }
-
-    public static FcmNotificationBuilder BuildDefaultNotification()
+    public FcmNotificationBuilder()
     {
-        var builder = new FcmNotificationBuilder();
-        builder.SetAndroidChannelId("ENMESHED");
-        return builder;
+        SetAndroidChannelId("ENMESHED");
     }
-
-    private NotificationBuilder SetAndroidChannelId(string channelId)
+    
+    private void SetAndroidChannelId(string channelId)
     {
         _notification.Data.AndroidChannelId = channelId;
-        return this;
     }
 
     public override NotificationBuilder AddContent(NotificationContent content)
@@ -57,7 +52,7 @@ public class FcmNotificationBuilder : NotificationBuilder
         return this;
     }
 
-    public override Notification Create()
+    public override Notification Build()
     {
         var serializedPayload = JsonSerializer.Serialize(_notification, _jsonSerializerOptions);
         var notification = new FcmNotification(serializedPayload);

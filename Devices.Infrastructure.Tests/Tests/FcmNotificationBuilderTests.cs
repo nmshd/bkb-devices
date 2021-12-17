@@ -4,6 +4,7 @@ using Devices.Infrastructure.PushNotifications;
 using Enmeshed.DevelopmentKit.Identity.ValueObjects;
 using Enmeshed.Tooling;
 using FluentAssertions;
+using Microsoft.Azure.NotificationHubs;
 using Xunit;
 
 namespace Devices.Infrastructure.Tests.Tests
@@ -15,12 +16,12 @@ namespace Devices.Infrastructure.Tests.Tests
         {
             SystemTime.Set(DateTime.Parse("2021-01-01T00:00:00.000Z"));
 
-            var builtNotification = FcmNotificationBuilder
-                .BuildDefaultNotification()
-                .SetNotificationId(0)
-                .AddContent(new NotificationContent(IdentityAddress.Create(new byte[] {0}, "id1"), new {SomeProperty = "someValue"}))
+            var builtNotification = NotificationBuilder
+                .Create(NotificationPlatform.Fcm)
+                .SetNotificationId(1)
                 .SetNotificationText("someNotificationTextTitle", "someNotificationTextBody")
-                .Create();
+                .AddContent(new NotificationContent(IdentityAddress.Create(new byte[] {0}, "id1"), new {SomeProperty = "someValue"}))
+                .Build();
 
             var formattedBuiltNotification = FormatJson(builtNotification.Body);
 
@@ -28,7 +29,7 @@ namespace Devices.Infrastructure.Tests.Tests
                 'data': {
                     'android_channel_id': 'ENMESHED',
                     'content-available': '1',
-                    'notId': 0,
+                    'notId': 1,
                     'title': 'someNotificationTextTitle',
                     'body': 'someNotificationTextBody',
                     'content': {
