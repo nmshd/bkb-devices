@@ -28,10 +28,7 @@ public class FcmNotificationBuilder : NotificationBuilder
 
     public override NotificationBuilder AddContent(NotificationContent content)
     {
-        _notification.Data.Content.AccountReference = content.AccountReference;
-        _notification.Data.Content.EventName = content.EventName;
-        _notification.Data.Content.SentAt = content.SentAt;
-        _notification.Data.Content.Payload = content.Payload;
+        _notification.Data.Content = content;
 
         SetContentAvailable(true);
 
@@ -92,22 +89,7 @@ public class FcmNotificationBuilder : NotificationBuilder
             public string Body { get; set; }
 
             [JsonPropertyName("content")]
-            public PayloadDataContent Content { get; } = new();
-
-            public class PayloadDataContent
-            {
-                [JsonPropertyName("accRef")]
-                public string AccountReference { get; set; }
-
-                [JsonPropertyName("eventName")]
-                public string EventName { get; set; }
-
-                [JsonPropertyName("sentAt")]
-                public DateTime SentAt { get; set; }
-
-                [JsonPropertyName("payload")]
-                public object Payload { get; set; }
-            }
+            public NotificationContent Content { get; set; }
         }
         // ReSharper restore UnusedAutoPropertyAccessor.Local
     }

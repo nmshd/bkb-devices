@@ -27,11 +27,11 @@ public class ApnsNotificationBuilder : NotificationBuilder
 
     public override NotificationBuilder AddContent(NotificationContent content)
     {
-
-        _notification.Content.AccountReference = content.AccountReference;
-        _notification.Content.EventName = content.EventName;
-        _notification.Content.SentAt = content.SentAt;
-        _notification.Content.Payload = content.Payload;
+        _notification.Content = content;
+        // _notification.Content.AccountReference = content.AccountReference;
+        // _notification.Content.EventName = content.EventName;
+        // _notification.Content.SentAt = content.SentAt;
+        // _notification.Content.Payload = content.Payload;
 
         SetContentAvailable(true);
 
@@ -75,7 +75,7 @@ public class ApnsNotificationBuilder : NotificationBuilder
         public int NotificationId { get; set; }
 
         [JsonPropertyName("content")]
-        public PayloadContent Content { get; } = new();
+        public NotificationContent Content { get; set; }
 
         [JsonPropertyName("aps")]
         public PayloadAps APS { get; } = new();

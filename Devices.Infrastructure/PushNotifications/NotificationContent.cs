@@ -1,4 +1,5 @@
 ﻿using System.Text.Json;
+using System.Text.Json.Serialization;
 using Enmeshed.DevelopmentKit.Identity.ValueObjects;
 using Enmeshed.Tooling;
 using Enmeshed.Tooling.Extensions;
@@ -33,8 +34,15 @@ public class NotificationContent
         AccountReference = recipient;
     }
 
+    [JsonPropertyName("accRef")]
     public string AccountReference { get; }
+
+    [JsonPropertyName("eventName")]
     public string EventName { get; }
+
+    [JsonPropertyName("sentAt")]
     public DateTime SentAt { get; }
+
+    [JsonPropertyName("payload")]
     public object Payload { get; }
 }

@@ -51,3 +51,16 @@ public class DateTimeConverter : JsonConverter<DateTime>
         writer.WriteStringValue(value.ToUniversalString());
     }
 }
+
+// public class NotificationContentConverter : JsonConverter<NotificationContent>
+// {
+//     public override NotificationContent Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+//     {
+//         throw new NotImplementedException();
+//     }
+//
+//     public override void Write(Utf8JsonWriter writer, NotificationContent value, JsonSerializerOptions options)
+//     {
+//         writer.WriteStartObject(value.ToUniversalString());
+//     }
+// }
