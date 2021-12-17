@@ -1,34 +1,17 @@
-﻿using System.Dynamic;
+﻿using System.Text.Json;
+using System.Text.Json.Serialization;
 using Microsoft.Azure.NotificationHubs;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
 
 namespace Devices.Infrastructure.PushNotifications;
 
 /// <summary>
-///     Final format:
-///     {
-///     "data": {
-///     "android_channel_id": "ENMESHED",
-///     "title": string,
-///     "notId": number,
-///     "accRef": string,
-///     "eventName": string,
-///     "sentAt": string,
-///     "payload": any
-///     }
-///     }
+///     See corresponding Unit Tests for an example of a built notification.
 /// </summary>
 public class FcmNotificationBuilder : NotificationBuilder
 {
-    private readonly dynamic _notification;
+    private readonly Payload _notification = new();
 
-    private FcmNotificationBuilder()
-    {
-        _notification = new ExpandoObject();
-        _notification.data = new ExpandoObject();
-        _notification.data.content = new ExpandoObject();
-    }
+    private FcmNotificationBuilder() { }
 
     public static FcmNotificationBuilder BuildDefaultNotification()
     {
@@ -39,47 +22,93 @@ public class FcmNotificationBuilder : NotificationBuilder
 
     private NotificationBuilder SetAndroidChannelId(string channelId)
     {
-        _notification.data.android_channel_id = channelId;
+        _notification.Data.AndroidChannelId = channelId;
         return this;
     }
 
     public override NotificationBuilder AddContent(NotificationContent content)
     {
-        _notification.data.content.accRef = content.AccountReference;
-        _notification.data.content.eventName = content.EventName;
-        _notification.data.content.sentAt = content.SentAt;
-        _notification.data.content.payload = content.Payload;
+        _notification.Data.Content.AccountReference = content.AccountReference;
+        _notification.Data.Content.EventName = content.EventName;
+        _notification.Data.Content.SentAt = content.SentAt;
+        _notification.Data.Content.Payload = content.Payload;
+
+        SetContentAvailable(true);
+
         return this;
     }
 
-    public override NotificationBuilder SetNotificationText(string text)
+    public override NotificationBuilder SetNotificationText(string title, string body)
     {
-        _notification.data.title = text;
+        if (!string.IsNullOrWhiteSpace(title))
+            _notification.Data.Title = title;
+
+        if (!string.IsNullOrWhiteSpace(body))
+            _notification.Data.Body = body;
+
         return this;
     }
-
-
-    public override NotificationBuilder SetNotificationBody(string text)
+    
+    private void SetContentAvailable(bool contentAvailable)
     {
-        _notification.data.body = text;
-        return this;
-    }
-    public override NotificationBuilder SetContentAvailable(string contentAvailable)
-    {
-        ((IDictionary<string, object>) _notification.data)["content-available"] = contentAvailable;
-        return this;
+        _notification.Data.ContentAvailable = contentAvailable ? "1" : "0";
     }
 
     public override NotificationBuilder SetNotificationId(int notificationId)
     {
-        _notification.data.notId = notificationId;
+        _notification.Data.NotificationId = notificationId;
         return this;
     }
 
     public override Notification Create()
     {
-        var payload = JsonConvert.SerializeObject(_notification, new JsonSerializerSettings {ContractResolver = new CamelCasePropertyNamesContractResolver()});
-        var notification = new FcmNotification(payload);
+        var serializedPayload = JsonSerializer.Serialize(_notification, _jsonSerializerOptions);
+        var notification = new FcmNotification(serializedPayload);
         return notification;
+    }
+
+    private class Payload
+    {
+        // ReSharper disable UnusedAutoPropertyAccessor.Local
+
+        [JsonPropertyName("data")]
+        public PayloadData Data { get; } = new();
+
+        public class PayloadData
+        {
+            [JsonPropertyName("android_channel_id")]
+            public string AndroidChannelId { get; set; }
+
+            [JsonPropertyName("content-available")]
+            public string ContentAvailable { get; set; } // TODO: make boolean?
+
+            [JsonPropertyName("notId")]
+            public int NotificationId { get; set; }
+
+            [JsonPropertyName("title")]
+            public string Title { get; set; }
+
+            [JsonPropertyName("body")]
+            public string Body { get; set; }
+
+            [JsonPropertyName("content")]
+            public PayloadDataContent Content { get; } = new();
+
+            public class PayloadDataContent
+            {
+                [JsonPropertyName("accRef")]
+                public string AccountReference { get; set; }
+
+                [JsonPropertyName("eventName")]
+                public string EventName { get; set; }
+
+                [JsonPropertyName("sentAt")]
+                public DateTime SentAt { get; set; }
+
+                [JsonPropertyName("payload")]
+                public object Payload { get; set; }
+            }
+        }
+        // ReSharper restore UnusedAutoPropertyAccessor.Local
     }
 }

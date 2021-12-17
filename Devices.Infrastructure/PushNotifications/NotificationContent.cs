@@ -29,12 +29,12 @@ public class NotificationContent
             Payload = pushNotification;
         }
 
-        SentAt = SystemTime.UtcNow.ToUniversalString();
+        SentAt = SystemTime.UtcNow;
         AccountReference = recipient;
     }
 
     public string AccountReference { get; }
     public string EventName { get; }
-    public string SentAt { get; }
+    public DateTime SentAt { get; }
     public object Payload { get; }
 }

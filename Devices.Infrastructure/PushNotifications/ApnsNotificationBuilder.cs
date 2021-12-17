@@ -1,37 +1,18 @@
-﻿using System.Dynamic;
+﻿using System.Text.Json;
+using System.Text.Json.Serialization;
 using Microsoft.Azure.NotificationHubs;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
 
 namespace Devices.Infrastructure.PushNotifications;
 
 /// <summary>
-///     # Final format:
-///     ## Headers:
-///     - apns-priority: 5
-///     - apns-collapse-id: 0
-///     ## Payload:
-///     {
-///     "data": {
-///     "accRef":"a",
-///     "eventName":"dynamic",
-///     "sentAt":"2020-03-24T14:18:23.906Z",
-///     "payload":"{'Some':'Payload'}"   },
-///     "aps":{
-///     "alert": ""
-///     }
-///     }
-///     }
+///     See corresponding Unit Tests for an example of a built notification.
 /// </summary>
 public class ApnsNotificationBuilder : NotificationBuilder
 {
-    private readonly dynamic _notification;
+    private readonly Payload _notification = new();
 
     private ApnsNotificationBuilder()
     {
-        _notification = new ExpandoObject();
-        _notification.content = new ExpandoObject();
-        _notification.aps = new ExpandoObject();
     }
 
     public static ApnsNotificationBuilder BuildDefaultNotification()
@@ -46,45 +27,92 @@ public class ApnsNotificationBuilder : NotificationBuilder
 
     public override NotificationBuilder AddContent(NotificationContent content)
     {
-        _notification.content.accRef = content.AccountReference;
-        _notification.content.eventName = content.EventName;
-        _notification.content.sentAt = content.SentAt;
-        _notification.content.payload = content.Payload;
-        return this;
-    }
 
-    public override NotificationBuilder SetNotificationText(string text)
-    {
-        if (!string.IsNullOrWhiteSpace(text))
-            _notification.aps.alert = text;
+        _notification.Content.AccountReference = content.AccountReference;
+        _notification.Content.EventName = content.EventName;
+        _notification.Content.SentAt = content.SentAt;
+        _notification.Content.Payload = content.Payload;
+
+        SetContentAvailable(true);
 
         return this;
     }
 
-    public override NotificationBuilder SetNotificationBody(string text)
+    public override NotificationBuilder SetNotificationText(string title, string body)
     {
-        // if (!string.IsNullOrWhiteSpace(text))
-            // _notification.aps.alert.body = text;
+        if (!string.IsNullOrWhiteSpace(title))
+            _notification.APS.Alert.Title = title;
+
+        if (!string.IsNullOrWhiteSpace(body))
+            _notification.APS.Alert.Body = body;
 
         return this;
     }
-
-    public override NotificationBuilder SetContentAvailable(string contentAvailable)
+    
+    private void SetContentAvailable(bool contentAvailable)
     {
-        ((IDictionary<string, object>) _notification.aps)["content-available"] = contentAvailable;
-        return this;
+        _notification.APS.ContentAvailable = contentAvailable ? "1" : "0";
     }
 
     public override NotificationBuilder SetNotificationId(int notificationId)
     {
-        _notification.notId = notificationId;
+        _notification.NotificationId = notificationId;
         return this;
     }
 
     public override Notification Create()
     {
-        var serializedNotification = JsonConvert.SerializeObject(_notification, new JsonSerializerSettings {ContractResolver = new CamelCasePropertyNamesContractResolver()});
-        var appleNotification = new AppleNotification(serializedNotification, _headers);
-        return appleNotification;
+        var serializedPayload = JsonSerializer.Serialize(_notification, _jsonSerializerOptions);
+        var notification = new AppleNotification(serializedPayload, _headers);
+        return notification;
+    }
+
+    private class Payload
+    {
+        // ReSharper disable UnusedAutoPropertyAccessor.Local
+
+        [JsonPropertyName("notId")]
+        public int NotificationId { get; set; }
+
+        [JsonPropertyName("content")]
+        public PayloadContent Content { get; } = new();
+
+        [JsonPropertyName("aps")]
+        public PayloadAps APS { get; } = new();
+
+        public class PayloadContent
+        {
+
+            [JsonPropertyName("accRef")]
+            public string AccountReference { get; set; }
+
+            [JsonPropertyName("eventName")]
+            public string EventName { get; set; }
+
+            [JsonPropertyName("sentAt")]
+            public DateTime SentAt { get; set; }
+
+            [JsonPropertyName("payload")]
+            public object Payload { get; set; }
+        }
+
+        public class PayloadAps
+        {
+            [JsonPropertyName("content-available")]
+            public string ContentAvailable { get; set; }
+
+            [JsonPropertyName("alert")]
+            public ApsAlert Alert { get; } = new();
+
+            public class ApsAlert
+            {
+                [JsonPropertyName("title")]
+                public string Title { get; set; }
+
+                [JsonPropertyName("body")]
+                public string Body { get; set; }
+            }
+        }
+        // ReSharper restore UnusedAutoPropertyAccessor.Local
     }
 }

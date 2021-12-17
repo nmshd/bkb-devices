@@ -45,33 +45,33 @@ public class AzureNotificationHubPushService : IPushService
     {
         var notificationContent = new NotificationContent(recipient, pushNotification);
         var notificationId = GetNotificationId(pushNotification);
-        var notificationText = GetNotificationText(pushNotification);
+        var notificationTextTitle = GetNotificationTextTitle(pushNotification);
+        var notificationTextBody = GetNotificationTextBody(pushNotification);
 
         foreach (var notificationPlatform in SupportedPlatforms)
         {
             var notification = NotificationBuilder
                 .BuildDefaultNotification(notificationPlatform)
-                .SetNotificationText(notificationText)
-                .SetNotificationBody(GetNotificationBody())
+                .SetNotificationText(notificationTextTitle, notificationTextBody)
                 .SetNotificationId(notificationId)
                 .AddContent(notificationContent)
                 .Create();
 
             await _notificationHubClient.SendNotificationAsync(notification, GetNotificationTags(recipient));
 
-            _logger.LogTrace($"Successfully sent push notification: {notification.ToJson()}");
+            _logger.LogTrace($"Successfully sent push notification to identity '{recipient}' on platform '{notificationPlatform}': {notification.ToJson()}");
         }
     }
 
-    private static string GetNotificationText(object pushNotification)
+    private static string GetNotificationTextTitle(object pushNotification)
     {
         var attribute = pushNotification.GetType().GetCustomAttribute<NotificationTextAttribute>();
-        return attribute == null ? "aaaaaaaaaaaaaa" : attribute.Value;
+        return attribute == null ? "Aktualisierungen eingegangen" : attribute.Value;
     }
 
-    private static string GetNotificationBody()
+    private static string GetNotificationTextBody(object pushNotification)
     {
-        return "bbbbbbbbbbbbbb";
+        return "Es sind neue Aktualisierungen in der Enmeshed App vorhanden.";
     }
 
     private static int GetNotificationId(object pushNotification)
