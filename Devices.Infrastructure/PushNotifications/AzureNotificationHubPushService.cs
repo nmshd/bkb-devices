@@ -52,6 +52,7 @@ public class AzureNotificationHubPushService : IPushService
             var notification = NotificationBuilder
                 .BuildDefaultNotification(notificationPlatform)
                 .SetNotificationText(notificationText)
+                .SetNotificationBody(GetNotificationBody())
                 .SetNotificationId(notificationId)
                 .AddContent(notificationContent)
                 .Create();
@@ -65,7 +66,12 @@ public class AzureNotificationHubPushService : IPushService
     private static string GetNotificationText(object pushNotification)
     {
         var attribute = pushNotification.GetType().GetCustomAttribute<NotificationTextAttribute>();
-        return attribute == null ? "" : attribute.Value;
+        return attribute == null ? "aaaaaaaaaaaaaa" : attribute.Value;
+    }
+
+    private static string GetNotificationBody()
+    {
+        return "bbbbbbbbbbbbbb";
     }
 
     private static int GetNotificationId(object pushNotification)

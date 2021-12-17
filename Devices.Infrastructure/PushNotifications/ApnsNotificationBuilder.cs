@@ -61,6 +61,14 @@ public class ApnsNotificationBuilder : NotificationBuilder
         return this;
     }
 
+    public override NotificationBuilder SetNotificationBody(string text)
+    {
+        // if (!string.IsNullOrWhiteSpace(text))
+            // _notification.aps.alert.body = text;
+
+        return this;
+    }
+
     public override NotificationBuilder SetContentAvailable(string contentAvailable)
     {
         ((IDictionary<string, object>) _notification.aps)["content-available"] = contentAvailable;

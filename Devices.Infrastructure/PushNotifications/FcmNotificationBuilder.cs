@@ -58,6 +58,12 @@ public class FcmNotificationBuilder : NotificationBuilder
         return this;
     }
 
+
+    public override NotificationBuilder SetNotificationBody(string text)
+    {
+        _notification.data.body = text;
+        return this;
+    }
     public override NotificationBuilder SetContentAvailable(string contentAvailable)
     {
         ((IDictionary<string, object>) _notification.data)["content-available"] = contentAvailable;

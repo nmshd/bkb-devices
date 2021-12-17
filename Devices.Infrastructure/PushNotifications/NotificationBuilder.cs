@@ -23,6 +23,7 @@ public abstract class NotificationBuilder
     public abstract NotificationBuilder AddContent(NotificationContent content);
 
     public abstract NotificationBuilder SetNotificationText(string text);
+    public abstract NotificationBuilder SetNotificationBody(string text);
 
     public abstract NotificationBuilder SetContentAvailable(string contentAvailable);
 
