@@ -25,7 +25,7 @@ public class AzureNotificationHubPushService : IPushService
     {
         var installation = new Installation
         {
-            InstallationId = registration.InstallationId.ToString(),
+            InstallationId = registration.InstallationId,
             PushChannel = registration.Handle,
             Tags = GetNotificationTags(identityId),
             Platform = registration.Platform switch
