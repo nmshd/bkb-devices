@@ -9,12 +9,14 @@ public class UpdateDeviceRegistrationValidator : AbstractValidator<UpdateDeviceR
 {
     public UpdateDeviceRegistrationValidator()
     {
-        RuleFor(dto => dto.Platform).DetailedNotNull().In("fcm", "apns");
+        RuleFor(dto => dto.Platform).In("fcm", "apns");
 
         RuleFor(dto => dto.Handle)
-            .DetailedNotNull()
+            .DetailedNotEmpty()
             .Length(10, 500).WithErrorCode(GenericApplicationErrors.Validation.InvalidPropertyValue().Code);
 
-        RuleFor(dto => dto.InstallationId).DetailedNotEmpty();
+        RuleFor(dto => dto.InstallationId)
+            .DetailedNotEmpty()
+            .Length(20, 50).WithErrorCode(GenericApplicationErrors.Validation.InvalidPropertyValue().Code);
     }
 }

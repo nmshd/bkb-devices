@@ -6,7 +6,7 @@ public class DeviceRegistration
     private DeviceRegistration() { }
 #pragma warning restore CS8618
 
-    public DeviceRegistration(string platform, string handle, Guid installationId)
+    public DeviceRegistration(string platform, string handle, string installationId)
     {
         Platform = platform;
         Handle = handle;
@@ -15,5 +15,5 @@ public class DeviceRegistration
 
     public string Platform { get; }
     public string Handle { get; }
-    public Guid InstallationId { get; }
+    public string InstallationId { get; }
 }
