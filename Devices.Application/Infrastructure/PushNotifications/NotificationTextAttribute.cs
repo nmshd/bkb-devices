@@ -2,10 +2,9 @@
 
 public class NotificationTextAttribute : Attribute
 {
-    public NotificationTextAttribute(string value)
-    {
-        Value = value;
-    }
+    public const string DEFAULT_TITLE = "Aktualisierungen eingegangen";
+    public const string DEFAULT_BODY = "Es sind neue Aktualisierungen in der Enmeshed App vorhanden.";
 
-    public string Value { get; }
+    public string Title { get; set; }
+    public string Body { get; set; }
 }

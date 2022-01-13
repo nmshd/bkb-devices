@@ -1,30 +1,32 @@
-﻿using Microsoft.Azure.NotificationHubs;
+﻿using System.Text.Encodings.Web;
+using System.Text.Json;
+using System.Text.Json.Serialization;
+using System.Text.Unicode;
+using Enmeshed.Tooling.Extensions;
+using Microsoft.Azure.NotificationHubs;
 
 namespace Devices.Infrastructure.PushNotifications;
 
 public abstract class NotificationBuilder
 {
+    protected JsonSerializerOptions _jsonSerializerOptions = new() {Converters = {new DateTimeConverter()}, PropertyNamingPolicy = JsonNamingPolicy.CamelCase /*, Encoder = JavaScriptEncoder.Create(UnicodeRanges.BasicLatin, UnicodeRanges.Latin1Supplement)*/};
     protected readonly Dictionary<string, string> _headers = new();
 
-    public static NotificationBuilder BuildDefaultNotification(NotificationPlatform platform)
+    public static NotificationBuilder Create(NotificationPlatform platform)
     {
         NotificationBuilder builder = platform switch
         {
-            NotificationPlatform.Fcm => FcmNotificationBuilder.BuildDefaultNotification(),
-            NotificationPlatform.Apns => ApnsNotificationBuilder.BuildDefaultNotification(),
+            NotificationPlatform.Fcm => new FcmNotificationBuilder(),
+            NotificationPlatform.Apns => new ApnsNotificationBuilder(),
             _ => throw new ArgumentException($"The platform {platform} is not supported.")
         };
-
-        builder.SetContentAvailable("1");
 
         return builder;
     }
 
     public abstract NotificationBuilder AddContent(NotificationContent content);
 
-    public abstract NotificationBuilder SetNotificationText(string text);
-
-    public abstract NotificationBuilder SetContentAvailable(string contentAvailable);
+    public abstract NotificationBuilder SetNotificationText(string title, string body);
 
     public abstract NotificationBuilder SetNotificationId(int notificationId);
 
@@ -34,5 +36,18 @@ public abstract class NotificationBuilder
         return this;
     }
 
-    public abstract Notification Create();
+    public abstract Notification Build();
+}
+
+public class DateTimeConverter : JsonConverter<DateTime>
+{
+    public override DateTime Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+    {
+        throw new NotImplementedException();
+    }
+
+    public override void Write(Utf8JsonWriter writer, DateTime value, JsonSerializerOptions options)
+    {
+        writer.WriteStringValue(value.ToUniversalString());
+    }
 }
