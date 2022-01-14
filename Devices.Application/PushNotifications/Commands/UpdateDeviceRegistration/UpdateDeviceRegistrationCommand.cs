@@ -8,5 +8,4 @@ public class UpdateDeviceRegistrationCommand : IRequest<Unit>, IMapTo<DeviceRegi
 {
     public string Platform { get; set; }
     public string Handle { get; set; }
-    public string InstallationId { get; set; }
 }
