@@ -34,15 +34,15 @@ public class Handler : IRequestHandler<ListDevicesQuery, ListDevicesResponse>
 
         if (request.Ids.Any())
             query = query.WithIdIn(request.Ids);
-
-        var totalRecords = await query.CountAsync(cancellationToken);
-
-        var devices = await query
+        
+        var items = await query
             .OrderBy(d => d.CreatedAt)
             .Paged(request.PaginationFilter)
             .ProjectTo<DeviceDTO>(_mapper.ConfigurationProvider)
             .ToListAsync(cancellationToken);
 
-        return new ListDevicesResponse(devices, request.PaginationFilter, totalRecords);
+        var totalNumberOfItems = items.Count < request.PaginationFilter.PageSize ? items.Count : await query.CountAsync(cancellationToken);
+
+        return new ListDevicesResponse(items, request.PaginationFilter, totalNumberOfItems);
     }
 }
