@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using AutoMapper.QueryableExtensions;
 using Devices.Application.Devices.DTOs;
 using Devices.Application.Extensions;
 using Devices.Domain.Entities;
@@ -8,7 +7,6 @@ using Enmeshed.BuildingBlocks.Application.Abstractions.Infrastructure.UserContex
 using Enmeshed.BuildingBlocks.Application.Extensions;
 using Enmeshed.DevelopmentKit.Identity.ValueObjects;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 
 namespace Devices.Application.Devices.Queries.ListDevices;
 
@@ -35,14 +33,10 @@ public class Handler : IRequestHandler<ListDevicesQuery, ListDevicesResponse>
         if (request.Ids.Any())
             query = query.WithIdIn(request.Ids);
         
-        var items = await query
-            .OrderBy(d => d.CreatedAt)
-            .Paged(request.PaginationFilter)
-            .ProjectTo<DeviceDTO>(_mapper.ConfigurationProvider)
-            .ToListAsync(cancellationToken);
+        var dbPaginationResult = await query.OrderAndPaginate(d => d.CreatedAt, request.PaginationFilter);
 
-        var totalNumberOfItems = items.Count < request.PaginationFilter.PageSize ? items.Count : await query.CountAsync(cancellationToken);
+        var items = _mapper.Map<DeviceDTO[]>(dbPaginationResult.ItemsOnPage);
 
-        return new ListDevicesResponse(items, request.PaginationFilter, totalNumberOfItems);
+        return new ListDevicesResponse(items, request.PaginationFilter, dbPaginationResult.TotalNumberOfItems);
     }
 }
