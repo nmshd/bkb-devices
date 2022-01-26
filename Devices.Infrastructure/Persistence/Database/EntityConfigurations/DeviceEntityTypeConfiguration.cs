@@ -9,6 +9,5 @@ public class DeviceEntityTypeConfiguration : IEntityTypeConfiguration<Device>
 {
     public void Configure(EntityTypeBuilder<Device> builder)
     {
-        // builder.ToTable("Devices");
     }
 }
