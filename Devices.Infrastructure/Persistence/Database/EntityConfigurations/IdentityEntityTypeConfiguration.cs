@@ -10,9 +10,7 @@ public class IdentityEntityTypeConfiguration : IEntityTypeConfiguration<Identity
     public void Configure(EntityTypeBuilder<Identity> builder)
     {
         builder.HasKey(x => x.Address);
-
-        builder.Property(x => x.Address).HasColumnType($"char({IdentityAddress.MAX_LENGTH})");
-
+        
         builder.Property(x => x.ClientId).HasMaxLength(200);
     }
 }

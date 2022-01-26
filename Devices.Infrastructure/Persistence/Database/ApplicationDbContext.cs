@@ -21,6 +21,8 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>, IDbConte
 
     public DbSet<Identity> Identities { get; set; }
 
+    public DbSet<Device> Devices { get; set; }
+
     public DbSet<Challenge> Challenges { get; set; }
 
     public IQueryable<T> SetReadOnly<T>() where T : class
@@ -62,20 +64,22 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>, IDbConte
         return await RunInTransaction(func, null, isolationLevel);
     }
 
+    protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
+    {
+        base.ConfigureConventions(configurationBuilder);
+        
+        configurationBuilder.Properties<IdentityAddress>().AreUnicode(false).AreFixedLength().HaveMaxLength(IdentityAddress.MAX_LENGTH).HaveConversion<IdentityAddressValueConverter>();
+        configurationBuilder.Properties<DeviceId>().AreUnicode(false).AreFixedLength().HaveMaxLength(DeviceId.MAX_LENGTH).HaveConversion<DeviceIdValueConverter>();
+        configurationBuilder.Properties<Username>().AreUnicode(false).AreFixedLength().HaveMaxLength(Username.MAX_LENGTH).HaveConversion<UsernameValueConverter>();
+
+        configurationBuilder.Properties<DateTime>().HaveConversion<DateTimeValueConverter>();
+        configurationBuilder.Properties<DateTime?>().HaveConversion<NullableDateTimeValueConverter>();
+    }
+
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
 
         builder.ApplyConfigurationsFromAssembly(typeof(DeviceEntityTypeConfiguration).Assembly);
-
-
-        builder.UseValueConverter(
-            new UsernameValueConverter(
-                new ConverterMappingHints(Username.MAX_LENGTH)));
-
-        builder.UseValueConverter(
-            new IdentityAddressValueConverter(new ConverterMappingHints(IdentityAddress.MAX_LENGTH)));
-
-        builder.UseValueConverter(new DeviceIdValueConverter(new ConverterMappingHints(DeviceId.MAX_LENGTH)));
     }
 }

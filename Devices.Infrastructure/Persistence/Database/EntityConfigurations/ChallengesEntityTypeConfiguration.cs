@@ -9,5 +9,7 @@ public class ChallengesEntityTypeConfiguration : IEntityTypeConfiguration<Challe
     public void Configure(EntityTypeBuilder<Challenge> builder)
     {
         builder.ToTable(nameof(Challenge) + "s", "Challenges");
+
+        builder.Property(x => x.Id).IsUnicode(false).IsFixedLength().HasMaxLength(20);
     }
 }
