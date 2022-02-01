@@ -118,6 +118,9 @@ public static class IServiceCollectionExtensions
                 options.Endpoints.EnableUserInfoEndpoint = false;
 
                 options.IssuerUri = configuration.GetAuthentication().IssuerUri;
+
+                options.Caching.CorsExpiration = TimeSpan.FromDays(1);
+                options.Caching.ResourceStoreExpiration = TimeSpan.FromDays(1);
             })
             .AddSigningCredential(Certificate.Get(configuration))
             .AddAspNetIdentity<ApplicationUser>()
@@ -140,6 +143,7 @@ public static class IServiceCollectionExtensions
                 };
             })
             .AddInMemoryCaching()
+            .AddConfigurationStoreCache()
             .Services.AddTransient<IProfileService, ProfileService>();
 
         var allowedOrigins = configuration.GetCorsConfiguration().AllowedOrigins;
