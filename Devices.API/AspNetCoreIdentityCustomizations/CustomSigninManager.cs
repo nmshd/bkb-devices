@@ -2,14 +2,13 @@
 using Enmeshed.BuildingBlocks.Application.Abstractions.Infrastructure.Persistence.Database;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Hosting.Internal;
 using Microsoft.Extensions.Options;
 
 namespace Devices.API.AspNetCoreIdentityCustomizations;
 
 public class CustomSigninManager : SignInManager<ApplicationUser>
 {
-    private readonly IDbContext _dbContext;
-
     public CustomSigninManager(
         UserManager<ApplicationUser> userManager,
         IHttpContextAccessor contextAccessor,
@@ -17,10 +16,8 @@ public class CustomSigninManager : SignInManager<ApplicationUser>
         IOptions<IdentityOptions> optionsAccessor,
         ILogger<SignInManager<ApplicationUser>> logger,
         IAuthenticationSchemeProvider schemes,
-        IUserConfirmation<ApplicationUser> confirmation,
-        IDbContext dbContext) : base(userManager, contextAccessor, claimsFactory, optionsAccessor, logger, schemes, confirmation)
+        IUserConfirmation<ApplicationUser> confirmation) : base(userManager, contextAccessor, claimsFactory, optionsAccessor, logger, schemes, confirmation)
     {
-        _dbContext = dbContext;
     }
 
     public override async Task<SignInResult> CheckPasswordSignInAsync(ApplicationUser user, string password, bool lockoutOnFailure)
@@ -30,10 +27,14 @@ public class CustomSigninManager : SignInManager<ApplicationUser>
         if (!result.Succeeded)
             return result;
 
-        user.LoginOccurred();
-        _dbContext.Set<ApplicationUser>().Update(user);
-        await _dbContext.SaveChangesAsync(CancellationToken.None);
+        await UpdateLastLoginDate(user);
 
         return result;
+    }
+
+    private async Task UpdateLastLoginDate(ApplicationUser user)
+    {
+        user.LoginOccurred();
+        await UserManager.UpdateAsync(user);
     }
 }
