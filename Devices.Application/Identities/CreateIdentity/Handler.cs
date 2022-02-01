@@ -6,7 +6,6 @@ using Enmeshed.BuildingBlocks.Application.Abstractions.Infrastructure.Persistenc
 using Enmeshed.DevelopmentKit.Identity.ValueObjects;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
@@ -40,7 +39,7 @@ public class Handler : IRequestHandler<CreateIdentityCommand, CreateIdentityResp
 
         _logger.LogTrace($"Address created. Result: {address}");
 
-        var existingIdentity = await _dbContext.Set<Identity>().Include(i => i.Devices).FirstWithAddressOrDefault(address, cancellationToken);
+        var existingIdentity = await _dbContext.Set<Identity>().FirstWithAddressOrDefault(address, cancellationToken);
 
         if (existingIdentity != null)
             throw new OperationFailedException(ApplicationErrors.Devices.AddressAlreadyExists());
