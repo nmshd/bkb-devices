@@ -29,9 +29,6 @@ namespace Devices.Infrastructure.Tests.Tests
                 'data': {
                     'android_channel_id': 'ENMESHED',
                     'content-available': '1',
-                    'notId': 1,
-                    'title': 'someNotificationTextTitle',
-                    'body': 'someNotificationTextBody',
                     'content': {
                         'accRef': 'id1KJnD8ipfckRQ1ivAhNVLtypmcVM5vPX4j',
                         'eventName': 'dynamic',
@@ -40,6 +37,11 @@ namespace Devices.Infrastructure.Tests.Tests
                             'someProperty': 'someValue'
                         }
                     }
+                },
+                'notification': {
+                    'notId': 1,
+                    'title': 'someNotificationTextTitle',
+                    'body': 'someNotificationTextBody'
                 }
             }");
 
