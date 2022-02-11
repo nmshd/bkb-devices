@@ -33,10 +33,10 @@ public class FcmNotificationBuilder : NotificationBuilder
     public override NotificationBuilder SetNotificationText(string title, string body)
     {
         if (!string.IsNullOrWhiteSpace(title))
-            _notification.Data.Title = title;
+            _notification.Notification.Title = title;
 
         if (!string.IsNullOrWhiteSpace(body))
-            _notification.Data.Body = body;
+            _notification.Notification.Body = body;
 
         return this;
     }
@@ -48,7 +48,7 @@ public class FcmNotificationBuilder : NotificationBuilder
 
     public override NotificationBuilder SetNotificationId(int notificationId)
     {
-        _notification.Data.NotificationId = notificationId;
+        _notification.Notification.NotificationId = notificationId;
         return this;
     }
 
@@ -66,14 +66,10 @@ public class FcmNotificationBuilder : NotificationBuilder
         [JsonPropertyName("data")]
         public PayloadData Data { get; } = new();
 
-        public class PayloadData
+        public PayloadNotification Notification { get; } = new();
+
+        public class PayloadNotification
         {
-            [JsonPropertyName("android_channel_id")]
-            public string AndroidChannelId { get; set; }
-
-            [JsonPropertyName("content-available")]
-            public string ContentAvailable { get; set; } // TODO: make boolean?
-
             [JsonPropertyName("notId")]
             public int NotificationId { get; set; }
 
@@ -82,6 +78,15 @@ public class FcmNotificationBuilder : NotificationBuilder
 
             [JsonPropertyName("body")]
             public string Body { get; set; }
+        }
+
+        public class PayloadData
+        {
+            [JsonPropertyName("android_channel_id")]
+            public string AndroidChannelId { get; set; }
+
+            [JsonPropertyName("content-available")]
+            public string ContentAvailable { get; set; } // TODO: make boolean?
 
             [JsonPropertyName("content")]
             public NotificationContent Content { get; set; }
