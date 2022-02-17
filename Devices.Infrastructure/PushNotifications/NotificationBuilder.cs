@@ -28,7 +28,7 @@ public abstract class NotificationBuilder
 
     public abstract NotificationBuilder SetNotificationText(string title, string body);
 
-    public abstract NotificationBuilder SetNotificationId(int notificationId);
+    public abstract NotificationBuilder SetTag(int notificationId);
 
     public NotificationBuilder AddHeader(string name, string value)
     {

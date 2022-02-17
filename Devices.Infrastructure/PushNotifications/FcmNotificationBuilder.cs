@@ -46,9 +46,9 @@ public class FcmNotificationBuilder : NotificationBuilder
         _notification.Data.ContentAvailable = contentAvailable ? "1" : "0";
     }
 
-    public override NotificationBuilder SetNotificationId(int notificationId)
+    public override NotificationBuilder SetTag(int notificationId)
     {
-        _notification.Notification.NotificationId = notificationId;
+        _notification.Notification.Tag = notificationId.ToString();
         return this;
     }
 
@@ -70,8 +70,8 @@ public class FcmNotificationBuilder : NotificationBuilder
 
         public class PayloadNotification
         {
-            [JsonPropertyName("notId")]
-            public int NotificationId { get; set; }
+            [JsonPropertyName("tag")]
+            public string Tag { get; set; }
 
             [JsonPropertyName("title")]
             public string Title { get; set; }

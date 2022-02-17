@@ -41,7 +41,7 @@ public class ApnsNotificationBuilder : NotificationBuilder
         _notification.APS.ContentAvailable = contentAvailable ? "1" : "0";
     }
 
-    public override NotificationBuilder SetNotificationId(int notificationId)
+    public override NotificationBuilder SetTag(int notificationId)
     {
         _notification.NotificationId = notificationId;
         return this;

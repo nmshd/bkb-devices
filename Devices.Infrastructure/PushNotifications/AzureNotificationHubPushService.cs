@@ -52,7 +52,7 @@ public class AzureNotificationHubPushService : IPushService
             var notification = NotificationBuilder
                 .Create(notificationPlatform)
                 .SetNotificationText(notificationText.Title, notificationText.Body)
-                .SetNotificationId(notificationId)
+                .SetTag(notificationId)
                 .AddContent(notificationContent)
                 .Build();
 

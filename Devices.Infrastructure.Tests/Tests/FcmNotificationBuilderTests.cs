@@ -18,7 +18,7 @@ namespace Devices.Infrastructure.Tests.Tests
 
             var builtNotification = NotificationBuilder
                 .Create(NotificationPlatform.Fcm)
-                .SetNotificationId(1)
+                .SetTag(1)
                 .SetNotificationText("someNotificationTextTitle", "someNotificationTextBody")
                 .AddContent(new NotificationContent(IdentityAddress.Parse("id1KJnD8ipfckRQ1ivAhNVLtypmcVM5vPX4j"), new {SomeProperty = "someValue"}))
                 .Build();
@@ -39,7 +39,7 @@ namespace Devices.Infrastructure.Tests.Tests
                     }
                 },
                 'notification': {
-                    'notId': 1,
+                    'tag': '1',
                     'title': 'someNotificationTextTitle',
                     'body': 'someNotificationTextBody'
                 }
